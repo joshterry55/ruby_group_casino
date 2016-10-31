@@ -191,6 +191,7 @@ def slots_cash_out_yes
 end
 
 def buy_casino
+  if @casino_1.name == "Ruby Casino"
     puts "\nWhoa.... Thats a lot of money you have there..."
     puts "Let me grab the owner."
     puts "----- Owner Arrives -----"
@@ -207,12 +208,14 @@ def buy_casino
       puts "What would you like to rename the #{@casino_1.name}? ('Example Casino')"
       @casino_1.name = gets.strip
       puts "\nIt's done! It's officially the #{@casino_1.name}!"
-      slots_menu
+      ruby_casino_menu
     when "no", "n"
       puts "Ahhh. Thats too bad."
     else
       puts "I need a yes or a no"
       buy_casino
     end
+  else
+  end
 
 end

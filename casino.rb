@@ -2,7 +2,7 @@ require 'pry'
 
 require_relative 'player'
 require_relative 'slots'
-require_relative 'indian_poker'
+require_relative 'high_low'
 
 
 
@@ -24,6 +24,7 @@ end
 #puts "Welcome to the #{@casino_1.name}!"
 
 def greeting
+	puts `clear`
   puts "\nWelcome to the wonderful world of Gambling!"
   puts "What Casino are we visiting today?"
   puts "1: #{@casino_1.name}"
@@ -62,12 +63,17 @@ def ruby_casino
 end
 
 def ruby_casino_menu
+	if @player_1.money > @casino_1.value
+		buy_casino
+	else
+ 	end
+	puts `clear`
   puts "Feeling Lucky?"
   puts "Where are we starting today?"
   puts
   puts "$$$ #{@casino_1.name} Games $$$"
   puts "1: Slots"
-  puts "2: Indian Poker"
+  puts "2: High-Low"
   puts "3: Exit"
   if @casino_1.name != "Ruby Casino"
     puts "4: My Casino Settings"
@@ -78,8 +84,8 @@ def ruby_casino_menu
   case selection
   when "1", "slots"
     slots_menu
-  when "2", "indian", "indian poker"
-    indian_menu
+  when "2", "high", "low", "high-low"
+    high_low_menu
   when "3", "exit"
     puts "\nI hope you enjoyed your time at the #{@casino_1.name}!"
     puts "Come Again"
@@ -93,6 +99,7 @@ def ruby_casino_menu
 end
 
 def casino_settings
+	puts `clear`
   puts "\nWelcome to #{@casino_1.name} Settings!"
   puts "1: Change Casino Name"
   puts "2: Change Your Name"
@@ -104,17 +111,20 @@ def casino_settings
     casino_name = gets.strip
     @casino_1.name = casino_name
     puts "The new name is #{@casino_1.name}!"
+		sleep 3
     casino_settings
   when "2"
     puts "Now that your the big shot here, what would you like everyone to call you?"
     new_name = gets.strip
     @player_1.name = new_name
     puts "Alright, from now on we call you #{@player_1.name}"
+		sleep 3
     casino_settings
   when "3", "exit"
     ruby_casino_menu
   else
     puts "Invalid Selection"
+		sleep 3
     casino_settings
   end
 end
