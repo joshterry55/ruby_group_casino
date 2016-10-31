@@ -42,8 +42,11 @@ def high_low_begin
   puts `clear`
   high_low_logo
   puts "\nYou have $#{@player_1.money}"
-  if @player_1 == 0
-    puts "\nYou are out of chips!"
+  if @player_1.money < 5
+    puts "\nYou don't have enough money!"
+    sleep 3
+    greeting
+
   else
   end
   puts "\nHere we have a deck of numbered cards 1-50."
@@ -97,12 +100,12 @@ def high_low_result
   if my_card > dealer_card
     puts "#{@high_low_winning_array.sample}"
     @player_1.money = (@player_1.money + 5)
-    sleep 5
+    sleep 4
     high_low_begin
   elsif my_card < dealer_card
     puts "#{@high_low_losing_array.sample}"
     @player_1.money = (@player_1.money - 5)
-    sleep 5
+    sleep 4
     high_low_begin
   else
     puts "Looks like its a tie, lets try again!"
