@@ -1,221 +1,89 @@
+@current_bet = 1
+@spin = [0, 0, 0]
+@player_1_money = 10 # TEMPORARY
 
-
-@slot_coins = 0
-def slots_menu
-  puts "\nWelcome to the SLOTS!"
-  puts "Make yourself comfortable #{@player_1.name}, you could be here awhile!"
-  puts "1: Play Slots"
-  puts "2: Cash Out"
-  puts "3: Exit"
-  case gets.strip
-  when "1", "play", "slots", "play slots"
-    puts "\nLets Begin!"
-    puts "MAY THE ODDS BE IN YOUR FAVOR!"
-    slots_initial_coins
-  when "2", "cash", "out", "cash out"
-    slots_cash_out
-  when "3", "exit"
-    puts "Come back later!"
-    ruby_casino_menu
-  else
-    puts "Invalid Selection, type 1, 2 or 3."
-    slots_menu
-  end
-end
-
-def slots_initial_coins
-  puts "\n\nBefore you begin you will need to buy a few coins."
-  puts "Each coin costs $2."
-  puts "You have $#{@player_1.money}."
-  puts "How many coins would you like to buy?"
-  @slot_coins = gets.strip.to_i
-  if @slot_coins * 2 > @player_1.money
-    puts "You dont have enough money for that many coins!"
-    slots_menu
-  else
-    @player_1.money -= @slot_coins * 2
-  end
-  puts "\n\nThat will be $#{@slot_coins * 2}."
-  puts "\n~~~~ Money Received ~~~~"
-  puts "\nYou have $#{@player_1.money} left."
-  puts "\nThank You, Lets get going!"
-  slots_begin
-end
-
-def slots_begin
-  puts "\nYou have #{@slot_coins} coins."
-  if @slot_coins == 0
-    puts "\nYou are out of coins!"
-    buy_more
-  else
-  end
-  puts "Your goal is to get all 3 numbers the same each time you pull the lever."
-  puts "Each LEVER PULL will cost 1 coin."
-  puts "Pull the Lever? yes or no? Saying no will take you back to Main Menu."
-  lever_pull = gets.strip.downcase
-  case lever_pull
-  when "yes", "y"
-    slots_result
-  when "no", "n"
-    puts "Thanks for playing!"
-    slots_menu
-  else
-    puts "Invalid Selection"
-    slots_begin
-  end
-end
-
-
-def buy_more
-  puts "\nBuy more coins? yes or no"
-  case gets.strip.downcase
-  when "yes", "y"
-    puts "How many more coins would you like to buy? $2 each."
-    selection = gets.strip.to_i
-    puts "\nThat will be $#{selection * 2}!"
-    puts "\n~~~~ Money Received ~~~~"
-    if selection * 2 > @player_1.money
-      puts "You don't have enough money for that many coins!"
-      buy_more
+def show_slots_logo
+  puts `clear`
+  puts """
+     _       _                        _     _            
+    | |     | |                      | |   (_)           
+ ___| | ___ | |_ _ __ ___   __ _  ___| |__  _ _ __   ___ 
+/ __| |/ _ \\| __| '_ ` _ \\ / _` |/ __| '_ \\| | '_ \\ / _ \\ 
+\\__ \\ | (_) | |_| | | | | | (_| | (__| | | | | | | |  __/
+|___/_|\\___/ \\__|_| |_| |_|\\__,_|\\___|_| |_|_|_| |_|\\___|
+                                           at Ruby Casino
+  """
+  if @spin[1] == 0 
+      show_default_slots
     else
-      @slot_coins = selection
-      @player_1.money -= @slot_coins * 2
-      slots_begin
+      puts puts "                    [ #{@spin[0]} ]|[ #{@spin[1]} ]|[ #{@spin[2]} ]"
     end
-
-  when "no", "n"
-    puts "\nToday isn't your day huh?"
-    puts "Maybe you'll have better luck back in #{@player_1.from}!"
-    puts "\nWe hope to take your money ..ermm... see you again!"
-    slots_menu
-  else
-  end
+  show_current_bet
 end
-
-@losing_array = [
-    "Better luck next time!",
-    "Wow It just isnt your day.",
-    "Come on, spin again!",
-    "You got this next spin!",
-    "Don't give up now!",
-    "Dang, thats not good."
-]
-
-
-def slots_result
-  puts "\nSpinning..."
+  
+def show_default_slots
+  puts "                    [ 3 ]|[ 3 ]|[ 3 ]"
   puts
-  roll
-  print @roll_array
-  if @roll_array.uniq.count == 1
-    puts "\n\nding ding ding JACKPOT!!!"
-    puts "\nYou won 1000 coins!"
-    @slot_coins = (@slot_coins - 1)
-    @slot_coins = (@slot_coins + 1000)
-    slots_cash_out
-    # puts "cash out while your ahead? yes or no"
-    # case gets.strip.downcase
-    # when "yes"
-    #   cash_out_yes
-    # when "no"
-    #   slots_begin
-    # else
-    #   puts "Invalid Selection"
-    #   cash_out
-    # end
+end
+
+def show_current_bet
+  puts "Current Bet: $#{@current_bet}                          Your money: $#{@player_1_money}"
+  puts
+end
+
+def ask_for_bet
+  puts "Enter bet amount (1-5) and press enter to spin,"
+  puts "or just press enter to use the current bet amount."
+  bet_amount = gets.strip
+  if bet_amount.length == 0
+    bet_amount = @current_bet
   else
-    puts "\n\nAhhh!"
-    #puts "\nBetter luck next time!"
+    bet_amount = bet_amount.to_i
+  end
+  if bet_amount < 1 || bet_amount > 5
+    show_slots_logo
+    puts "Not a valid bet amount, bet 1 - 5 dollars!"
     puts
-    puts "#{@losing_array.sample}"
-    @slot_coins = (@slot_coins - 1)
-    slots_begin
-  end
-
-
-
-end
-
-def roll()
-  @roll_array = []
-  3.times do
-    roll_value = rand(4) + 1
-    @roll_array << roll_value
-  end
-  # #total = 0
-  # roll_array.each do |roll|
-  #   new_total = total + roll
-  #   total = new_total
-  # end
-  # total
-end
-
-def slots_cash_out
-  puts "\n\n\ncash out while your ahead? yes or no"
-  case gets.strip.downcase
-  when "yes", "y"
-    slots_cash_out_yes
-  when "no", "n"
-    slots_begin
+    ask_for_bet
   else
-    puts "Invalid Selection"
-    slots_cash_out
+    #if bet_amount > @player_1_money
+
+    @current_bet = bet_amount
+    spin_slots
   end
 end
 
-def slots_cash_out_yes
-  puts "\n\nYou finished with #{@slot_coins} coins."
-  if @slot_coins > 0
-    puts "Wow! You made a KILLING!"
-    puts "Here you go...."
-    puts "\nYou received $#{@slot_coins * 2}!"
-    @player_1.money = (@player_1.money + @slot_coins * 2)
-    @slot_coins = 0
-    puts "You have $#{@player_1.money}."
-     if @player_1.money > @casino_1.value
-       buy_casino
-    #   puts "Whoa.... Thats a lot of money you have there..."
-    #   puts "Let me grab the owner."
-    #   puts "----- Owner Arrives -----"
-    #   puts "Seems like you have done really well at the #{@casino_1.name}!"
-    #   puts "Would you be interested in buying the #{@casino_1.name}?"
-    #
-    else
-    end
-    puts "\nCome Again!"
-    slots_menu
-  else
-    puts "\nYou received $0 because you had no coins!"
-    slots_menu
+
+def spin_slots
+  @player_1_money -= @current_bet
+  @spin = [0, 0, 0]
+  (0..44).each do |i|
+    @spin[0] = 1 + rand(5) if i < 15
+    @spin[1] = 1 + rand(5) if i < 30
+    @spin[2] = 1 + rand(5)
+    show_slots_logo()
+    puts "\nSpinning..."
+    sleep 0.05
+    # possibly add 
+  end
+
+  if @spin[0] == @spin[1] && @spin[0] == @spin[2]
+    puts "\nThree #{@spin[0]}'s! You win!"
+    sleep 3
+  end
+
+  if @spin[0] == @spin[1] && @spin[0] != @spin[2]
+    puts "\nTwo consecutive #{@spin[0]}'s! Partial win!"
+    sleep 3
+  end
+
+  if @spin[1] == @spin[2] && @spin[0] != @spin[2]
+    puts "\nTwo consecutive #{@spin[1]}'s! Partial win!"
+    sleep 3
   end
 end
 
-def buy_casino
-  if @casino_1.name == "Ruby Casino"
-    puts "\nWhoa.... Thats a lot of money you have there..."
-    puts "Let me grab the owner."
-    puts "----- Owner Arrives -----"
-    puts "Seems like you have done really well at the #{@casino_1.name}!"
-    puts "Would you be interested in buying the #{@casino_1.name} for $#{@casino_1.value}? yes or no"
-    case gets.strip.downcase
-    when "yes", "y"
-      puts "You won't regret this!"
-      puts "That will be $#{@casino_1.value}."
-      @player_1.money = (@player_1.money - @casino_1.value)
-      puts "\n----- Money Received -----"
-      puts "\nYou have $#{@player_1.money}"
-      puts
-      puts "What would you like to rename the #{@casino_1.name}? ('Example Casino')"
-      @casino_1.name = gets.strip
-      puts "\nIt's done! It's officially the #{@casino_1.name}!"
-      ruby_casino_menu
-    when "no", "n"
-      puts "Ahhh. Thats too bad."
-    else
-      puts "I need a yes or a no"
-      buy_casino
-    end
-  else
-  end
-
+while true
+  show_slots_logo
+  ask_for_bet
 end
