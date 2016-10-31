@@ -74,9 +74,10 @@ def ruby_casino_menu
   puts "$$$ #{@casino_1.name} Games $$$"
   puts "1: Slots"
   puts "2: High-Low"
-  puts "3: Exit"
+  puts "3: Blackjack"
+  puts "4: Exit"
   if @casino_1.name != "Ruby Casino"
-    puts "4: My Casino Settings"
+    puts "5: My Casino Settings"
   else
   end
   puts "-- Make Selection --"
@@ -86,11 +87,13 @@ def ruby_casino_menu
       show_slots_logo
   when "2", "high", "low", "high-low"
     high_low_menu
-  when "3", "exit"
+  when "3"
+    blackjack_menu
+  when "4", "exit"
     puts "\nI hope you enjoyed your time at the #{@casino_1.name}!"
     puts "Come Again"
     greeting
-  when "4", "settings"
+  when "5", "settings"
     casino_settings
   else
     puts "Invalid Selection, Please choose from the list above."
