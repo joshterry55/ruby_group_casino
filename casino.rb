@@ -83,7 +83,7 @@ def ruby_casino_menu
   selection = gets.strip.downcase
   case selection
   when "1", "slots"
-    slots_menu
+      show_slots_logo
   when "2", "high", "low", "high-low"
     high_low_menu
   when "3", "exit"
