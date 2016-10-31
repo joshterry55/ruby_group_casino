@@ -3,6 +3,7 @@ require 'pry'
 require_relative 'player'
 require_relative 'slots'
 require_relative 'high_low'
+require_relative 'blackjack'
 
 
 
