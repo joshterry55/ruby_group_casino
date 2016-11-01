@@ -1,11 +1,12 @@
 require 'pry'
-require 'colorize'
 
 require_relative 'player'
-require_relative 'slots'
+#require_relative 'slots'
 require_relative 'high_low'
-require_relative 'blackjack'
 
+require_relative 'roulette'
+
+require_relative 'josh_cards'
 
 
 class Casino
@@ -20,14 +21,43 @@ class Casino
 end
 
 @player_1 = Person.new
+@player_2 = Person.new
 @casino_1 = Casino.new("Ruby Casino", "Salt Lake City", 21, 1000)
 
 
 #puts "Welcome to the #{@casino_1.name}!"
 
+def player_selection
+  puts `clear`
+  puts "\nWhich player would you like to be?"
+  puts "1: #{@player_1.name}"
+  puts "2: #{@player_2.name}"
+  puts "3: Exit"
+  selection = gets.strip.downcase
+  case selection
+  when "1", "#{@player_1.name}"
+    puts "You have selected to start with #{@player_1.name}!"
+    @current_player = @player_1
+    @other_player = @player_2
+    sleep 3
+    greeting
+  when "2", "#{@player_2.name}"
+    puts "You have selected to start with #{@player_2.name}!"
+    @current_player = @player_2
+    @other_player = @player_2
+    sleep 3
+    greeting
+  when "3", "exit"
+  else
+    puts "Invalid Selection"
+    sleep 2
+    player_selection
+  end
+end
+
 def greeting
 	puts `clear`
-  puts "\nWelcome to the wonderful world of Gambling!"
+  puts "\nWelcome to the wonderful world of Gambling #{@current_player.name}!"
   puts "What Casino are we visiting today?"
   puts "1: #{@casino_1.name}"
   puts "2: Other Casino"
@@ -43,7 +73,9 @@ def greeting
     greeting
   when "3", "exit"
     puts "Thank for coming!"
-    exit
+    sleep 3
+    player_selection
+
   else
     "We dont have access to that Casino!"
     greeting
@@ -52,11 +84,11 @@ end
 
 def ruby_casino
   puts
-  puts "~~~~~ Welcome to the #{@casino_1.name} #{@player_1.name}! ~~~~~"
+  puts "~~~~~ Welcome to the #{@casino_1.name} #{@current_player.name}! ~~~~~"
   puts "\nWe are thrilled to have your money... I mean you!"
-  if @player_1.age < @casino_1.minimum_age
+  if @current_player.age < @casino_1.minimum_age
     puts "\nOhh wait... Our minimum age at the #{@casino_1.name} is #{@casino_1.minimum_age}..."
-    puts "\nCome back in #{@casino_1.minimum_age - @player_1.age} year(s)!"
+    puts "\nCome back in #{@casino_1.minimum_age - @current_player.age} year(s)!"
     puts
     exit
   else
@@ -65,7 +97,7 @@ def ruby_casino
 end
 
 def ruby_casino_menu
-	if @player_1.money > @casino_1.value
+	if @current_player.money > @casino_1.value
 		buy_casino
 	else
  	end
@@ -76,10 +108,10 @@ def ruby_casino_menu
   puts "$$$ #{@casino_1.name} Games $$$"
   puts "1: Slots"
   puts "2: High-Low"
-  puts "3: Blackjack"
-  puts "4: Exit"
+	puts "67: Roulette"
+  puts "3: Exit"
   if @casino_1.name != "Ruby Casino"
-    puts "5: My Casino Settings"
+    puts "4: My Casino Settings"
   else
   end
   puts "-- Make Selection --"
@@ -89,13 +121,13 @@ def ruby_casino_menu
       show_slots_logo
   when "2", "high", "low", "high-low"
     high_low_menu
-  when "3"
-    blackjack_menu
-  when "4", "exit"
+  when "3", "exit"
     puts "\nI hope you enjoyed your time at the #{@casino_1.name}!"
     puts "Come Again"
     greeting
-  when "5", "settings"
+	when "67", "roulette"
+		roulette_menu
+  when "4", "settings"
     casino_settings
   else
     puts "Invalid Selection, Please choose from the list above."
@@ -121,8 +153,8 @@ def casino_settings
   when "2"
     puts "Now that your the big shot here, what would you like everyone to call you?"
     new_name = gets.strip
-    @player_1.name = new_name
-    puts "Alright, from now on we call you #{@player_1.name}"
+    @current_player.name = new_name
+    puts "Alright, from now on we call you #{@current_player.name}"
 		sleep 3
     casino_settings
   when "3", "exit"
@@ -134,7 +166,36 @@ def casino_settings
   end
 end
 
+def buy_casino
+  if @casino_1.name == "Ruby Casino"
+    puts "\nWhoa.... Thats a lot of money you have there..."
+    puts "Let me grab the owner."
+    puts "----- Owner Arrives -----"
+    puts "Seems like you have done really well at the #{@casino_1.name}!"
+    puts "Would you be interested in buying the #{@casino_1.name} for $#{@casino_1.value}? yes or no"
+    case gets.strip.downcase
+    when "yes", "y"
+      puts "You won't regret this!"
+      puts "That will be $#{@casino_1.value}."
+      @current_player.money = (@current_player.money - @casino_1.value)
+      puts "\n----- Money Received -----"
+      puts "\nYou have $#{@current_player.money}"
+      puts
+      puts "What would you like to rename the #{@casino_1.name}? ('Example Casino')"
+      @casino_1.name = gets.strip
+      puts "\nIt's done! It's officially the #{@casino_1.name}!"
+      ruby_casino_menu
+    when "no", "n"
+      puts "Ahhh. Thats too bad."
+    else
+      puts "I need a yes or a no"
+      buy_casino
+    end
+  else
+  end
+end
+
 
 while true
-  greeting
+  player_selection
 end

@@ -18,10 +18,13 @@ class Person
     if answer > 1000
       puts "\nWhoa! Thats a lot of money!"
       puts "Only bring in up to $1000 at a time for security reasons."
-      sleep 5
+      sleep 3
       @money = 1000
     else
       @money = answer
     end
+    puts "Now what is your information Player 2?"
+    puts "If this was Player 2 your game will start shortly."
+    sleep 3
   end
 end
