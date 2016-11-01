@@ -58,7 +58,7 @@ def show_default_slots
 end
 
 def show_current_bet
-  puts "Current Bet: $#{@current_bet}                          Your money: $#{@player_1.money}"
+  puts "Current Bet: $#{@current_bet}                          Your money: $#{@current_player.money}"
   puts
 end
 
@@ -78,7 +78,7 @@ def ask_for_bet
     @message_code = 5
     show_slots_logo
   else
-    #if bet_amount > @player_1.money
+    #if bet_amount > @current_player.money
 
     @current_bet = bet_amount
     spin_slots
@@ -87,7 +87,7 @@ end
 
 
 def spin_slots
-  @player_1.money -= @current_bet
+  @current_player.money -= @current_bet
   @spin = [0, 0, 0]
   (0..44).each do |i|
     @spin[0] = 1 + rand(5) if i < 15
@@ -102,19 +102,19 @@ def spin_slots
 
   if @spin[0] == @spin[1] && @spin[0] == @spin[2]
     @message_code = 3
-    @player_1.money += (@current_bet * 10) * (@current_bet * 10)
+    @current_player.money += (@current_bet * 10) * (@current_bet * 10)
     show_slots_logo
   end
 
   if @spin[0] == @spin[1] && @spin[0] != @spin[2]
     @message_code = 1
-    @player_1.money += (@current_bet + 1) * (@current_bet + 1)
+    @current_player.money += (@current_bet + 1) * (@current_bet + 1)
     show_slots_logo
   end
 
   if @spin[1] == @spin[2] && @spin[0] != @spin[2]
     @message_code = 2
-    @player_1.money += (@current_bet + 1) * (@current_bet + 1)
+    @current_player.money += (@current_bet + 1) * (@current_bet + 1)
     show_slots_logo
   end
 
