@@ -11,6 +11,9 @@ require_relative 'rock_paper_scissors'
 
 require_relative 'josh_cards'
 
+@winning_sound = Sounder::Sound.new "assets/winning.mp3" # @winning_sound.play to use
+@losing_sound = Sounder::Sound.new "assets/losing.mp3" # @losing_sound.play to use
+@money_sound = Sounder::Sound.new "assets/cashmoney.mp3" # @money_sound.play to use
 
 class Casino
   attr_accessor :name, :location, :minimum_age, :value
@@ -224,6 +227,7 @@ def buy_casino
     puts "Would you be interested in buying the #{@casino_1.name} for $#{@casino_1.value}? yes or no"
     case gets.strip.downcase
     when "yes", "y"
+      @money_sound.play
       puts "You won't regret this!"
       puts "That will be $#{@casino_1.value}."
       @current_player.money = (@current_player.money - @casino_1.value)

@@ -2,6 +2,7 @@
 @spin = [0, 0, 0]
 @message_code = 0
 @slots_game_sound = Sounder::Sound.new "assets/slots2.mp3"
+@lever_sound = Sounder::Sound.new "assets/lever.mp3"
 
 def show_slots_logo
   puts `clear`
@@ -74,7 +75,10 @@ def ask_for_bet
   puts "or just press enter to use the current bet amount."
   puts "To back away from the slot machine, type 'leave'."
   bet_amount = gets.strip
-  ruby_casino_menu if bet_amount.downcase == 'leave'
+  if bet_amount.downcase == 'leave'
+    @spin = [0, 0, 0]
+    ruby_casino_menu
+  end
   if bet_amount.length == 0
     bet_amount = @current_bet
   else
@@ -95,6 +99,7 @@ end
 
 
 def spin_slots
+  @lever_sound.play
   @current_player.money -= @current_bet
   @spin = [0, 0, 0]
   (0..44).each do |i|
@@ -109,21 +114,22 @@ def spin_slots
   @message_code = 0
 
   if @spin[0] == @spin[1] && @spin[0] == @spin[2]
+    @winning_sound.play
     @message_code = 3
     @current_player.money += (@current_bet * 10) * (@current_bet * 10)
     show_slots_logo
-  end
-
-  if @spin[0] == @spin[1] && @spin[0] != @spin[2]
+  elsif @spin[0] == @spin[1] && @spin[0] != @spin[2]
+    @winning_sound.play
     @message_code = 2
     @current_player.money += (@current_bet + 1) * (@current_bet + 1)
     show_slots_logo
-  end
-
-  if @spin[1] == @spin[2] && @spin[0] != @spin[2]
+  elsif @spin[1] == @spin[2] && @spin[0] != @spin[2]
+    @winning_sound.play
     @message_code = 2
     @current_player.money += (@current_bet + 1) * (@current_bet + 1)
     show_slots_logo
+  else
+    @losing_sound.play
   end
 
   show_slots_logo
