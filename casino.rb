@@ -125,12 +125,25 @@ def ruby_casino
   ruby_casino_menu
 end
 
+def ruby_casino_menu_logo
+  puts '''
+  ▄████████    ▄████████    ▄████████  ▄█  ███▄▄▄▄    ▄██████▄
+███    ███   ███    ███   ███    ███ ███  ███▀▀▀██▄ ███    ███
+███    █▀    ███    ███   ███    █▀  ███▌ ███   ███ ███    ███
+███          ███    ███   ███        ███▌ ███   ███ ███    ███
+███        ▀███████████ ▀███████████ ███▌ ███   ███ ███    ███
+███    █▄    ███    ███          ███ ███  ███   ███ ███    ███
+███    ███   ███    ███    ▄█    ███ ███  ███   ███ ███    ███
+████████▀    ███    █▀   ▄████████▀  █▀    ▀█   █▀   ▀██████▀
+  '''.colorize(:light_red)
+end
 def ruby_casino_menu
 	if @current_player.money > @casino_1.value
 		buy_casino
 	else
  	end
 	puts `clear`
+  ruby_casino_menu_logo
   puts "Feeling Lucky?"
   puts "Where are we starting today?"
   puts

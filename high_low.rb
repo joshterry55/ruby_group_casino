@@ -55,6 +55,35 @@ def high_low_begin
   else
   @high_low_wager = selection
   end
+  if selection == 42
+    puts "\nTake one of these!"
+    sleep 2
+    puts '''
+         / \
+        |\_/|
+        |---|
+        |   |
+        |   |
+      _ |=-=| _
+  _  / \|   |/ \
+ / \|   |   |   ||\
+|   |   |   |   | \>
+|   |   |   |   |   \
+| -   -   -   - |)   )
+|                   /
+ \                 /
+  \               /
+   \             /
+    \           /
+         '''.colorize(:light_yellow)
+   sleep 2
+   puts "\nYou pissed off the dealer!"
+   puts "\nThe dealer kicked you out!"
+   sleep 2
+   ruby_casino_menu
+  else
+  end
+
   if @current_player.money < 1
     puts "\nYou don't have enough money!"
     sleep 3
@@ -121,7 +150,7 @@ def high_low_result
   puts "----- Drawing -----"
   puts
   sleep 1.0
-  if card2.suit == "Hearts" || card1.suit == "Diamonds"
+  if card2.suit == "Hearts" || card2.suit == "Diamonds"
     puts "#{card2.rank} of #{card2.suit}".colorize(:light_red)
   else
     puts "#{card2.rank} of #{card2.suit}".colorize(:light_blue)
