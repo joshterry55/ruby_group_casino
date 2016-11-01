@@ -3,7 +3,7 @@
 def high_low_menu
   puts `clear`
   high_low_logo
-  puts "\nWelcome to the High-Low!"
+  puts "\nWelcome to the High-Low!".colorize(:light_green)
   puts "Take a seat #{@current_player.name}, here its you against the Dealer!"
   puts "1: Play High-Low"
   puts "2: Exit"
@@ -34,13 +34,13 @@ def high_low_logo
               /$$  \ $$
              |  $$$$$$/
               \______/
-  '''
+  '''.colorize(:light_yellow)
 end
 
 def high_low_begin
   puts `clear`
   high_low_logo
-  puts "\nMoney on hand: $#{@current_player.money}"
+  puts "\nMoney on hand: $#{@current_player.money}".colorize(:light_green)
   puts
   puts "How much would you like to wager? Type 0 to exit to menu"
   selection = gets.strip.to_i
@@ -64,8 +64,8 @@ def high_low_begin
   end
   puts "\nHere we have a normal deck of cards."
   puts "You and I will both put $#{@high_low_wager} on the table"
-  puts "I will draw the first card"
-  puts "You will draw the next card"
+  puts "I will draw the first card".colorize(:light_red)
+  puts "You will draw the next card".colorize(:light_blue)
   puts "Whoever has the highest card takes the money."
   puts "Are you in? ENTER to begin, or NO to go back to main menu."
   answer = gets.strip.downcase
@@ -105,7 +105,11 @@ def high_low_result
   dealer_card = card1.poker_value
   puts
   sleep 1
-  puts "#{card1.rank} of #{card1.suit}"
+  if card1.suit == "Hearts" || card1.suit == "Diamonds"
+    puts "#{card1.rank} of #{card1.suit}".colorize(:light_red)
+  else
+    puts "#{card1.rank} of #{card1.suit}".colorize(:light_blue)
+  end
   #puts dealer_card
   puts "\nTry to beat that!"
   puts "\nPress Enter to draw card."
@@ -117,16 +121,22 @@ def high_low_result
   puts "----- Drawing -----"
   puts
   sleep 1.0
-  puts "#{card2.rank} of #{card2.suit}"
+  if card2.suit == "Hearts" || card1.suit == "Diamonds"
+    puts "#{card2.rank} of #{card2.suit}".colorize(:light_red)
+  else
+    puts "#{card2.rank} of #{card2.suit}".colorize(:light_blue)
+  end
   #puts my_card
   puts
   if my_card > dealer_card
     puts "#{@high_low_winning_array.sample}"
+    puts "You won $#{@high_low_wager}!"
     @current_player.money = (@current_player.money + @high_low_wager)
     sleep 4
     high_low_begin
   elsif my_card < dealer_card
     puts "#{@high_low_losing_array.sample}"
+    puts "You lost $#{@high_low_wager}!"
     @current_player.money = (@current_player.money - @high_low_wager)
     sleep 4
     high_low_begin

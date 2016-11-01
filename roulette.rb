@@ -66,7 +66,7 @@ def roulette_menu
     when "2", "learn", "learn the rules"
       roulette_rules
     when "3", "multiplayer"
-      puts "Get #{@other_player} and lets get going!"
+      puts "Get #{@other_player.name} and lets get going!"
       sleep 2
       roulette_multiplayer
     when "4", "exit"
@@ -92,7 +92,7 @@ _______  _______           _        _______ __________________ _______
 | ) \ \__| (___) || (___) || (____/\| (____/\   | |      | |   | (____/\
 |/   \__/(_______)(_______)(_______/(_______/   )_(      )_(   (_______/
 ------------------------------------------------------------------------
-  '''
+  '''.colorize(:light_blue)
 end
 
 def roulette_begin
@@ -114,7 +114,7 @@ def roulette_begin
     roulette_begin
   else
   end
-  puts "\nCurrent Wager: #{@wager}"
+  puts "\nCurrent Wager: #{@wager}".colorize(:light_yellow)
   puts "\nChoose which type of bet you would like to make."
   puts "1: Straight Up"
   puts "2: Odd"
@@ -146,7 +146,7 @@ def straight_bet
   puts `clear`
   roulette_logo
   puts "\nYou have selected Straight Up bet."
-  puts "\nYour current wager is: $#{@wager}"
+  puts "\nYour current wager is: #{@wager}".colorize(:light_yellow)
   puts "\nWhat number is the ball going to land on? 1-36"
   answer = gets.strip.to_i
   if answer > 36
@@ -160,14 +160,18 @@ def straight_bet
   new_array = @roulette_array.sample
   puts
   sleep 2
-  puts "#{new_array[0]}"
+  if new_array[1] = "Red"
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_red)
+  else
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_blue)
+  end
   if answer == new_array[0]
-    puts "works"
+    puts "\nCongrats you won BIG! You won $#{@wager * 35}!"
     @current_player.money = (@current_player.money + (@wager * 35))
     sleep 3
     roulette_begin
   else
-    puts "\nYour out of luck!"
+    puts "\nYoure out of luck!"
     puts "\nMaybe you should go back to #{@current_player.from}!"
     @current_player.money = (@current_player.money - @wager)
     puts "\nYou lost $#{@wager}"
@@ -180,13 +184,17 @@ def odd_bet
   puts `clear`
   roulette_logo
   puts "\nYou have selected a bet on Odd numbers."
-  puts "\nYour current wager is: $#{@wager}"
+  puts "\nYour current wager is: $#{@wager}".colorize(:light_yellow)
   sleep 2
   puts "\n---- Rolling ----"
   new_array = @roulette_array.sample
   puts
   sleep 2
-  puts "#{new_array[0]}"
+  if new_array[1] = "Red"
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_red)
+  else
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_blue)
+  end
   if new_array[2] == "Odd"
     puts "\nIt's Your Lucky Day!"
     @current_player.money = (@current_player.money + @wager)
@@ -205,13 +213,17 @@ def even_bet
   puts `clear`
   roulette_logo
   puts "\nYou have selected to bet on Even numbers."
-  puts "\nYour current wager is: $#{@wager}"
+  puts "\nYour current wager is: $#{@wager}".colorize(:light_yellow)
   sleep 2
   puts "\n---- Rolling ----"
   new_array = @roulette_array.sample
   puts
   sleep 2
-  puts "#{new_array[0]}"
+  if new_array[1] = "Red"
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_red)
+  else
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_blue)
+  end
   if new_array[2] == "Even"
     puts "\nIt's Your Lucky Day!"
     @current_player.money = (@current_player.money + @wager)
@@ -230,13 +242,17 @@ def red_bet
   puts `clear`
   roulette_logo
   puts "\nYou have selected to bet on Red."
-  puts "\nYour current wager is: $#{@wager}"
+  puts "\nYour current wager is: $#{@wager}".colorize(:light_green)
   sleep 2
   puts "\n---- Rolling ----"
   new_array = @roulette_array.sample
   puts
   sleep 2
-  puts "It's a #{new_array[1]} #{new_array[0]}!!"
+  if new_array[1] = "Red"
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_red)
+  else
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_blue)
+  end
   if new_array[1] == "Red"
     puts "\nIt's Your Lucky Day!"
     @current_player.money = (@current_player.money + @wager)
@@ -255,13 +271,17 @@ def black_bet
   puts `clear`
   roulette_logo
   puts "\nYou have selected to bet on Black."
-  puts "\nYour current wager is: #{@wager}"
+  puts "\nYour current wager is: #{@wager}".colorize(:light_yellow)
   sleep 2
   puts "\n---- Rolling ----"
   new_array = @roulette_array.sample
   puts
   sleep 2
-  puts "It's a #{new_array[1]} #{new_array[0]}!!"
+  if new_array[1] = "Red"
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_red)
+  else
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_blue)
+  end
   if new_array[1] == "Black"
     puts "\nIt's Your Lucky Day!"
     @current_player.money = (@current_player.money + @wager)
@@ -274,6 +294,14 @@ def black_bet
     sleep 3
   end
   roulette_begin
+end
+
+def red_roulette
+  if new_array[1] = "Red"
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_red)
+  else
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_blue)
+  end
 end
 
 def roulette_rules
@@ -398,7 +426,7 @@ def multi_betting
   puts `clear`
   roulette_logo
   puts
-  puts "#{@player_1.name} Current Wager: #{@wager1}                       #{@player_2.name} Current Wager: #{@wager2}"
+  puts "#{@player_1.name} Current Wager: #{@wager1}                       #{@player_2.name} Current Wager: #{@wager2}".colorize(:light_yellow)
   puts "\n\n~~~ Betting ~~~."
   puts "1: Straight Up"
   puts "2: Odd"
@@ -453,21 +481,25 @@ def multi_begin
   else
     puts "#{@player_1.name} bet on #{@bet1}"
   end
-  puts "Your wager is #{@wager1}"
+  puts "Your wager is #{@wager1}".colorize(:light_yellow)
   puts
   if @bet2 == "1"
     puts "#{@player_2.name} bet on #{@my_straight_2}"
   else
     puts "#{@player_2.name} bet on #{@bet2} "
   end
-  puts "Your wager is #{@wager2}"
+  puts "Your wager is #{@wager2}".colorize(:light_yellow)
   puts
   sleep 2
   puts "\n---- Rolling ----"
   new_array = @roulette_array.sample
   puts
   sleep 2
-  puts "It's a #{new_array[1]} #{new_array[0]}!!"
+  if new_array[1] = "Red"
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_red)
+  else
+    puts "It's a #{new_array[1]} #{new_array[0]}!!".colorize(:light_blue)
+  end
   puts
   sleep 2
   if @bet1 == "Odd"
@@ -476,7 +508,7 @@ def multi_begin
       @player_1.money = (@player_1.money + @wager1)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_1.name}! You lost #{@wager1}."
+      puts "\nBetter luck next time #{@player_1.name}! You lost $#{@wager1}."
       @player_1.money = (@player_1.money - @wager1)
       sleep 3
     end
@@ -489,7 +521,7 @@ def multi_begin
       @player_1.money = (@player_1.money + @wager1)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_1.name}! You lost #{@wager1}."
+      puts "\nBetter luck next time #{@player_1.name}! You lost $#{@wager1}."
       @player_1.money = (@player_1.money - @wager1)
       sleep 3
     end
@@ -502,7 +534,7 @@ def multi_begin
       @player_1.money = (@player_1.money + @wager1)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_1.name}! You lost #{@wager1}."
+      puts "\nBetter luck next time #{@player_1.name}! You lost $#{@wager1}."
       @player_1.money = (@player_1.money - @wager1)
       sleep 3
     end
@@ -515,7 +547,7 @@ def multi_begin
       @player_1.money = (@player_1.money + @wager1)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_1.name}! You lost #{@wager1}."
+      puts "\nBetter luck next time #{@player_1.name}! You lost $#{@wager1}."
       @player_1.money = (@player_1.money - @wager1)
       sleep 3
     end
@@ -528,7 +560,7 @@ def multi_begin
       @player_1.money = (@player_1.money + (@wager1 * 35))
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_1.name}! You lost #{@wager1}."
+      puts "\nBetter luck next time #{@player_1.name}! You lost $#{@wager1}."
       @player_1.money = (@player_1.money - @wager1)
       sleep 3
     end
@@ -541,7 +573,7 @@ def multi_begin
       @player_2.money = (@player_2.money + @wager2)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_2.name}! You lost #{@wager2}."
+      puts "\nBetter luck next time #{@player_2.name}! You lost $#{@wager2}."
       @player_2.money = (@player_2.money - @wager2)
       sleep 3
     end
@@ -554,7 +586,7 @@ def multi_begin
       @player_2.money = (@player_2.money + @wager2)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_2.name}! You lost #{@wager2}."
+      puts "\nBetter luck next time #{@player_2.name}! You lost $#{@wager2}."
       @player_2.money = (@player_2.money - @wager2)
       sleep 3
     end
@@ -567,7 +599,7 @@ def multi_begin
       @player_2.money = (@player_2.money + @wager2)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_2.name}! You lost #{@wager2}."
+      puts "\nBetter luck next time #{@player_2.name}! You lost $#{@wager2}."
       @player_2.money = (@player_2.money - @wager2)
       sleep 3
     end
@@ -580,7 +612,7 @@ def multi_begin
       @player_2.money = (@player_2.money + @wager2)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_2.name}! You lost #{@wager2}."
+      puts "\nBetter luck next time #{@player_2.name}! You lost $#{@wager2}."
       @player_2.money = (@player_2.money - @wager2)
       sleep 3
     end
@@ -593,7 +625,7 @@ def multi_begin
       @player_2.money = (@player_2.money + (@wager2 * 35))
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_2.name}! You lost #{@wager2}."
+      puts "\nBetter luck next time #{@player_2.name}! You lost $#{@wager2}."
       @player_2.money = (@player_2.money - @wager2)
       sleep 3
     end
