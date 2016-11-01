@@ -1,6 +1,7 @@
 @current_bet = 1
 @spin = [0, 0, 0]
 @message_code = 0
+@slots_game_sound = Sounder::Sound.new "assets/slots2.mp3"
 
 def show_slots_logo
   puts `clear`
@@ -15,6 +16,7 @@ puts "                                           at #{@casino_1.name}"
 puts
   if @spin[1] == 0 
       show_default_slots
+      @slots_game_sound.play
     else
       puts puts "                    [ #{@spin[0]} ]|[ #{@spin[1]} ]|[ #{@spin[2]} ]"
     end
