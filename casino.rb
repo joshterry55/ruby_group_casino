@@ -85,6 +85,8 @@ def player_selection
 end
 
 def greeting
+  slot_sound = Sounder::Sound.new "./assets/slots.mp3"
+  slot_sound.play
 	puts `clear`
   puts "\nWelcome to the wonderful world of Gambling #{@current_player.name}!"
   puts "What Casino are we visiting today?"
