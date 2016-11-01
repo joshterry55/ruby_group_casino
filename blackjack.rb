@@ -44,7 +44,7 @@ puts """
   | '--'A|                                                          | '--'K|
   `------'                                                          `------'
 
-"""
+""".colorize(:yellow)
 end
 
 
@@ -126,10 +126,13 @@ def hit_bust
       puts "                      Do you want to play again?"
       print "                      > "
       gets.strip 
+    elsif @player_total == 21
+      puts "BLACKJACK! YOU WIN!"
+      blackjack_menu
     else
       puts "                      Do you want to hit? (y or n)"
       print "                      > "
-      case gets.strip 
+      case gets.strip.downcase 
       when 'y'
         card_compare
         # compute_player_hand
@@ -167,42 +170,59 @@ def compute_dealer_hand
 end
 
 def dealer_show
-
+# compute_dealer_hand
   if @dealer_total < 17 
     @dealer_hand.each do |x|
       puts "                      Dealer: #{x.rank} of #{x.suit}."
     end
     # @player_hand << @d_shuffle.pop
-    compute_dealer_hand
     puts "                      #{@dealer_total}"
-    # gets.strip
+    # compute_dealer_hand
     @dealer_hand << @d_shuffle.pop
+    compute_dealer_hand
+    #     @dealer_hand.each do |x|
+    #   puts "                      Dealer: #{x.rank} of #{x.suit}."
+    # end
+    # puts "                      #{@dealer_total}"
     dealer_show
+    # binding.pry
    elsif @dealer_total >= 17 && @dealer_total <= 21
       @dealer_hand.each do |x|
       puts "                      Dealer: #{x.rank} of #{x.suit}."
+      end
       compute_dealer_hand
-    end
-    declare_winner
+      puts "                      #{@dealer_total}"
+      declare_winner
+  elsif @dealer_total > 21 
+          @dealer_hand.each do |x|
+      puts "                      Dealer: #{x.rank} of #{x.suit}."
+      end
+      compute_dealer_hand
+      puts "                      #{@dealer_total}"
+    puts "                      The dealer busted! You WIN!"
+    gets.strip
   end
-  # binding.pry
+  
  end
 
  def declare_winner
   if @player_total > @dealer_total 
-    puts "You WIN!"
+    puts "                       You WIN!"
     gets.strip
+    blackjack_menu
   elsif @player_total < @dealer_total
-    puts "You LOSE!"
+    puts "                       You LOSE!"
     gets.strip
+    blackjack_menu
   elsif @player_total == @dealer_total
-    puts "You PUSH!"
+    puts "                       You PUSH!"
     gets.strip
+    blackjack_menu
   end
  end
-# TO DO: 
-# - Make it say 'shuffling deck' when deck array runs out'
-# - Make bets actually work and affect wallet
+
+# TODO: if the dealer has 21 they auto win
+
 
 
 
