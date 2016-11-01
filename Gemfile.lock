@@ -15,7 +15,7 @@ PLATFORMS
 
 DEPENDENCIES
   colorize
-  pry
+  pry (~> 0.10.4)
 
 RUBY VERSION
    ruby 2.3.1p112

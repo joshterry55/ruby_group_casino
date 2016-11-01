@@ -4,15 +4,15 @@
 
 def show_slots_logo
   puts `clear`
-  puts """
-     _       _                        _     _            
-    | |     | |                      | |   (_)           
- ___| | ___ | |_ _ __ ___   __ _  ___| |__  _ _ __   ___ 
-/ __| |/ _ \\| __| '_ ` _ \\ / _` |/ __| '_ \\| | '_ \\ / _ \\ 
-\\__ \\ | (_) | |_| | | | | | (_| | (__| | | | | | | |  __/
-|___/_|\\___/ \\__|_| |_| |_|\\__,_|\\___|_| |_|_|_| |_|\\___|
-                                           at Ruby Casino
-  """
+  puts 
+puts "     _       _                        _     _            ".colorize(:light_green)
+puts "    | |     | |                      | |   (_)           ".colorize(:light_green)
+puts " ___| | ___ | |_ _ __ ___   __ _  ___| |__  _ _ __   ___ ".colorize(:light_green)
+puts "/ __| |/ _ \\| __| '_ ` _ \\ / _` |/ __| '_ \\| | '_ \\ / _ \\ ".colorize(:light_green)
+puts "\\__ \\ | (_) | |_| | | | | | (_| | (__| | | | | | | |  __/".colorize(:green)
+puts "|___/_|\\___/ \\__|_| |_| |_|\\__,_|\\___|_| |_|_|_| |_|\\___|".colorize(:green)
+puts "                                           at #{@casino_1.name}"
+puts
   if @spin[1] == 0 
       show_default_slots
     else
@@ -27,19 +27,23 @@ def show_message_code
   case @message_code
   when 0
     puts
-    puts "No winnings this round."
+    if @spin[0] != 0
+      puts "No winnings this round.".colorize(:red)
+    else
+      puts
+    end
     puts
   when 1
     puts
-    puts "Two consecutive #{@spin[0]}'s! You win $#{((@current_bet + 1) * (@current_bet + 1))}!"
+    puts "Two consecutive #{@spin[0]}'s! You win $#{((@current_bet + 1) * (@current_bet + 1))}!".colorize(:light_blue)
     puts
   when 2
     puts
-    puts "Two consecutive #{@spin[1]}'s! You win $#{(@current_bet + 1) * (@current_bet + 1)}!"
+    puts "Two consecutive #{@spin[1]}'s! You win $#{(@current_bet + 1) * (@current_bet + 1)}!".colorize(:light_blue)
     puts
   when 3
     puts
-    puts "Three #{@spin[0]}'s! You win #{(@current_bet * 10) * (@current_bet * 10)}!"
+    puts "Three #{@spin[0]}'s! You win #{(@current_bet * 10) * (@current_bet * 10)}!".colorize(:green)
     puts
   when 4
     puts
@@ -47,7 +51,7 @@ def show_message_code
     puts
   when 5
     puts
-    puts "Not a valid bet amount, bet 1 - 5 dollars!"
+    puts "Not a valid bet amount, bet 1 - 5 dollars!".colorize(:magenta)
     puts
   end
 end
@@ -58,7 +62,7 @@ def show_default_slots
 end
 
 def show_current_bet
-  puts "Current Bet: $#{@current_bet}                          Your money: $#{@current_player.money}"
+  puts "Current Bet: $#{@current_bet}                          Your money: $#{@current_player.money}".colorize(:yellow)
   puts
 end
 
