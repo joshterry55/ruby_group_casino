@@ -178,16 +178,28 @@ def dealer_show
     # gets.strip
     @dealer_hand << @d_shuffle.pop
     dealer_show
-   elsif 
-    @dealer
+   elsif @dealer_total >= 17 && @dealer_total <= 21
+      @dealer_hand.each do |x|
+      puts "                      Dealer: #{x.rank} of #{x.suit}."
+      compute_dealer_hand
+    end
+    declare_winner
   end
   # binding.pry
  end
 
-def display_hand
-end
-
-
+ def declare_winner
+  if @player_total > @dealer_total 
+    puts "You WIN!"
+    gets.strip
+  elsif @player_total < @dealer_total
+    puts "You LOSE!"
+    gets.strip
+  elsif @player_total == @dealer_total
+    puts "You PUSH!"
+    gets.strip
+  end
+ end
 # TO DO: 
 # - Make it say 'shuffling deck' when deck array runs out'
 # - Make bets actually work and affect wallet
