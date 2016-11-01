@@ -2,9 +2,9 @@ require 'pry'
 require 'colorize'
 
 require_relative 'player'
-#require_relative 'slots'
+require_relative 'slots'
 require_relative 'high_low'
-
+require_relative 'blackjack'
 require_relative 'roulette'
 
 require_relative 'josh_cards'
