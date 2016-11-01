@@ -1,5 +1,6 @@
 require 'pry'
 require 'colorize'
+require 'sounder'
 
 require_relative 'player'
 require_relative 'slots'
