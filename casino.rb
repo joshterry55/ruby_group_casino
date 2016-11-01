@@ -99,6 +99,7 @@ def greeting
   when "2"
     puts
     puts "***** Closed for renovation. Come back later. *****"
+    sleep 3
     greeting
   when "3", "exit"
     puts "Thank you for coming!"
