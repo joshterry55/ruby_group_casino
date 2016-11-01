@@ -22,7 +22,7 @@ class Casino
 end
 
 @player_1 = Person.new
-@player_2 = Person.new
+@player_2 = 0
 @casino_1 = Casino.new("Ruby Casino", "Salt Lake City", 21, 1000)
 
 
@@ -32,27 +32,53 @@ def player_selection
   puts `clear`
   puts "\nWhich player would you like to be?"
   puts "1: #{@player_1.name}"
-  puts "2: #{@player_2.name}"
-  puts "3: Exit"
-  selection = gets.strip.downcase
-  case selection
-  when "1", "#{@player_1.name}"
-    puts "You have selected to start with #{@player_1.name}!"
-    @current_player = @player_1
-    @other_player = @player_2
-    sleep 3
-    greeting
-  when "2", "#{@player_2.name}"
-    puts "You have selected to start with #{@player_2.name}!"
-    @current_player = @player_2
-    @other_player = @player_2
-    sleep 3
-    greeting
-  when "3", "exit"
+  if @player_2 == 0
+    puts "2: Create A Player"
+    puts "3: Exit"
+    selection = gets.strip.downcase
+    case selection
+    when "1", "#{@player_1.name}"
+      puts "You have selected to start with #{@player_1.name}!"
+      @current_player = @player_1
+      @other_player = @player_2
+      sleep 3
+      greeting
+    when "2"
+      @player_2 = Person.new
+      player_selection
+    when "3", "exit"
+      puts "Come Again"
+      exit
+    else
+      puts "Invalid Selection"
+      sleep 2
+      player_selection
+    end
   else
-    puts "Invalid Selection"
-    sleep 2
-    player_selection
+    puts "2: #{@player_2.name}"
+    puts "3: Exit"
+    selection = gets.strip.downcase
+    case selection
+    when "1", "#{@player_1.name}"
+      puts "You have selected to start with #{@player_1.name}!"
+      @current_player = @player_1
+      @other_player = @player_2
+      sleep 3
+      greeting
+    when "2", "#{@player_2.name}"
+      puts "You have selected to start with #{@player_2.name}!"
+      @current_player = @player_2
+      @other_player = @player_2
+      sleep 3
+      greeting
+    when "3", "exit"
+      puts "Come Again"
+      exit
+    else
+      puts "Invalid Selection"
+      sleep 2
+      player_selection
+    end
   end
 end
 

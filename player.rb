@@ -23,8 +23,5 @@ class Person
     else
       @money = answer
     end
-    puts "Now what is your information Player 2?"
-    puts "If this was Player 2 your game will start shortly."
-    sleep 3
   end
 end
