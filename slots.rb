@@ -35,7 +35,7 @@ def show_message_code
     puts
   when 1
     puts
-    puts "Two consecutive #{@spin[0]}'s! You win $#{((@current_bet + 1) * (@current_bet + 1))}!".colorize(:light_blue)
+    puts "You do not have the funds to make that bet.".colorize(:magenta)
     puts
   when 2
     puts
@@ -82,8 +82,10 @@ def ask_for_bet
     @message_code = 5
     show_slots_logo
   else
-    #if bet_amount > @current_player.money
-
+    if bet_amount > @current_player.money
+      @message_code = 1
+      show_slots_logo
+    end
     @current_bet = bet_amount
     spin_slots
   end
@@ -111,7 +113,7 @@ def spin_slots
   end
 
   if @spin[0] == @spin[1] && @spin[0] != @spin[2]
-    @message_code = 1
+    @message_code = 2
     @current_player.money += (@current_bet + 1) * (@current_bet + 1)
     show_slots_logo
   end
