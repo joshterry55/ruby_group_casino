@@ -38,7 +38,7 @@ def player_selection
     selection = gets.strip.downcase
     case selection
     when "1", "#{@player_1.name}"
-      puts "You have selected to start with #{@player_1.name}!"
+      puts "You have selected to play with #{@player_1.name}!"
       @current_player = @player_1
       @other_player = @player_2
       sleep 3
@@ -60,13 +60,13 @@ def player_selection
     selection = gets.strip.downcase
     case selection
     when "1", "#{@player_1.name}"
-      puts "You have selected to start with #{@player_1.name}!"
+      puts "You have selected to play with #{@player_1.name}!"
       @current_player = @player_1
       @other_player = @player_2
       sleep 3
       greeting
     when "2", "#{@player_2.name}"
-      puts "You have selected to start with #{@player_2.name}!"
+      puts "You have selected to play with #{@player_2.name}!"
       @current_player = @player_2
       @other_player = @player_2
       sleep 3
@@ -99,7 +99,7 @@ def greeting
     puts "***** Closed for renovation. Come back later. *****"
     greeting
   when "3", "exit"
-    puts "Thank for coming!"
+    puts "Thank you for coming!"
     sleep 3
     player_selection
 
