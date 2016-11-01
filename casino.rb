@@ -43,7 +43,7 @@ def player_selection
       puts "You have selected to play with #{@player_1.name}!"
       @current_player = @player_1
       @other_player = @player_2
-      sleep 3
+      sleep 2
       greeting
     when "2"
       @player_2 = Person.new
@@ -65,13 +65,13 @@ def player_selection
       puts "You have selected to play with #{@player_1.name}!"
       @current_player = @player_1
       @other_player = @player_2
-      sleep 3
+      sleep 2
       greeting
     when "2", "#{@player_2.name}"
       puts "You have selected to play with #{@player_2.name}!"
       @current_player = @player_2
       @other_player = @player_2
-      sleep 3
+      sleep 2
       greeting
     when "3", "exit"
       puts "Come Again"
@@ -85,8 +85,6 @@ def player_selection
 end
 
 def greeting
-  slot_sound = Sounder::Sound.new "./assets/slots.mp3"
-  slot_sound.play
 	puts `clear`
   puts "\nWelcome to the wonderful world of Gambling #{@current_player.name}!"
   puts "What Casino are we visiting today?"
