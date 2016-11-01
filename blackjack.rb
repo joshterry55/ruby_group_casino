@@ -1,5 +1,5 @@
 require 'pry'
-
+require 'colorize'
 
 class Card
   attr_accessor :rank, :suit
@@ -44,7 +44,7 @@ puts """
   | '--'A|                                                          | '--'K|
   `------'                                                          `------'
 
-""".colorize(:yellow)
+""".colorize(:light_yellow)
 end
 
 
@@ -58,12 +58,13 @@ def blackjack_menu
   print "                     > "
   case gets.strip
   when '1'
-    puts "Alright! Lets begin!"
+    puts "                   Alright! Lets begin!"
     bet
+    # deal
   when '2'
     ruby_casino_menu
   else
-    puts "Invalid Input. Please Try Again!"
+    puts "                   Invalid Input. Please Try Again!"
     blackjack_menu
   end
 end
@@ -72,23 +73,18 @@ def bet
   puts "Your wallet total: $#{@current_player.money}"
   if @current_player.money < 5
     puts "Sorry, the table minimum is 5 and you are unable to play."
-    exit
+    ruby_casino_menu
   else 
   end
-  # puts 'Rules explained...'
-  # puts 'You want to play BLACKJACK?'
-  # puts '1) Yes'
-  # puts '2) No'
-  # case gets.strip
-  #   when '1'
-  #     # @current_player.money - 5
-      deal
-  #   when '2'
-  #     ruby_casino_menu
-  #   else 
-  #     puts "Invalid input, try again."
-  #     bet
-  #   end
+  puts 'Get as close to 21 and beat the dealer!'
+  puts 'How much do you want to bet?'
+  @bet_amount = gets.strip.to_i
+  if @bet_amount < 5 || @bet_amount > @current_player.money
+    puts 'Sorry that is an invalid amount!'
+    bet 
+  else 
+    deal
+  end
 end
 
 def deal
@@ -125,7 +121,9 @@ def hit_bust
       puts "                      You busted!"
       puts "                      Do you want to play again?"
       print "                      > "
+      binding.pry
       gets.strip 
+      blackjack_menu
     elsif @player_total == 21
       puts "BLACKJACK! YOU WIN!"
       blackjack_menu
@@ -200,6 +198,8 @@ def dealer_show
       compute_dealer_hand
       puts "                      #{@dealer_total}"
     puts "                      The dealer busted! You WIN!"
+    binding.pry
+    bet
     gets.strip
   end
   
@@ -208,14 +208,17 @@ def dealer_show
  def declare_winner
   if @player_total > @dealer_total 
     puts "                       You WIN!"
+    binding.pry
     gets.strip
     blackjack_menu
   elsif @player_total < @dealer_total
     puts "                       You LOSE!"
+    binding.pry
     gets.strip
     blackjack_menu
   elsif @player_total == @dealer_total
     puts "                       You PUSH!"
+    binding.pry
     gets.strip
     blackjack_menu
   end
