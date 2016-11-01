@@ -6,6 +6,7 @@ require_relative 'slots'
 require_relative 'high_low'
 require_relative 'blackjack'
 require_relative 'roulette'
+require_relative 'rock_paper_scissors'
 
 require_relative 'josh_cards'
 
@@ -137,9 +138,10 @@ def ruby_casino_menu
   puts "2: High-Low"
   puts "3: Blackjack"
 	puts "4: Roulette"
-  puts "5: Exit"
+  puts "5: Rock, Paper, Scissors"
+  puts "6: Exit"
   if @casino_1.name != "Ruby Casino"
-    puts "6: My Casino Settings"
+    puts "7: My Casino Settings"
   else
   end
   puts "-- Make Selection --"
@@ -151,13 +153,15 @@ def ruby_casino_menu
     high_low_menu
   when "3", "blackjack", "black", "jack"
     blackjack_menu
-  when "5", "exit"
+  when "4", "roulette"
+    roulette_menu
+  when "5", "Rock", "Paper", "Scissors"
+    start_rps
+  when "6", "exit"
     puts "\nI hope you enjoyed your time at the #{@casino_1.name}!"
     puts "Come Again"
     greeting
-	when "4", "roulette"
-		roulette_menu
-  when "6", "settings"
+  when "7", "settings"
     casino_settings
   else
     puts "Invalid Selection, Please choose from the list above."
