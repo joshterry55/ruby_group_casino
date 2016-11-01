@@ -39,8 +39,8 @@ puts """
   
   .------.                                                          .------.
   |A.--. |                                                          |K.--. |
-  | (\/)  |                                                          | :/\:  |
-  | :\/:  |                                                          | :\/:  |
+  | (\\/) |                                                          | :/\\: |
+  | :\\/: |                                                          | :\\/: |
   | '--'A|                                                          | '--'K|
   `------'                                                          `------'
 
@@ -69,8 +69,8 @@ def blackjack_menu
 end
  
 def bet
-  puts "Your wallet total: $#{@player_1.money}"
-  if @player_1.money < 5
+  puts "Your wallet total: $#{@current_player.money}"
+  if @current_player.money < 5
     puts "Sorry, the table minimum is 5 and you are unable to play."
     exit
   else 
@@ -81,7 +81,7 @@ def bet
   # puts '2) No'
   # case gets.strip
   #   when '1'
-  #     # @player_1.money - 5
+  #     # @current_player.money - 5
       deal
   #   when '2'
   #     ruby_casino_menu
@@ -101,14 +101,14 @@ def deal
   # puts "You have #{@player_hand[0].rank} of #{@player_hand[0].suit} and #{@player_hand[1].rank} of #{@player_hand[1].suit}."
   puts "                      Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}." #and #{dealer_hand[1].rank} #{dealer_hand[1].suit}."
   puts "                      ---------------------" 
-  compute_player_hand
   compute_dealer_hand
+  compute_player_hand
 end
 
 def compute_player_hand
   @player_total = 0
   @player_hand.each do |x|
-    puts "                      #{@player_1.name}: #{x.rank} of #{x.suit}."
+    puts "                      #{@current_player.name}: #{x.rank} of #{x.suit}."
     if (x.rank == 'J' || x.rank == 'Q' || x.rank == 'K')
       x.rank = 10
     elsif ( x.rank == 'A')
@@ -129,7 +129,7 @@ def hit_bust
     else
       puts "                      Do you want to hit? (y or n)"
       print "                      > "
-      case gets.strip
+      case gets.strip 
       when 'y'
         card_compare
         # compute_player_hand
@@ -167,10 +167,21 @@ def compute_dealer_hand
 end
 
 def dealer_show
-  # @dealer_hand
 
-
-  binding.pry
+  if @dealer_total < 17 
+    @dealer_hand.each do |x|
+      puts "                      Dealer: #{x.rank} of #{x.suit}."
+    end
+    # @player_hand << @d_shuffle.pop
+    compute_dealer_hand
+    puts "                      #{@dealer_total}"
+    # gets.strip
+    @dealer_hand << @d_shuffle.pop
+    dealer_show
+   elsif 
+    @dealer
+  end
+  # binding.pry
  end
 
 def display_hand
