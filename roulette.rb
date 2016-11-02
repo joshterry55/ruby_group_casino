@@ -271,7 +271,7 @@ def black_bet
   puts `clear`
   roulette_logo
   puts "\nYou have selected to bet on Black."
-  puts "\nYour current wager is: #{@wager}".colorize(:light_yellow)
+  puts "\nYour current wager is: $#{@wager}".colorize(:light_yellow)
   sleep 2
   puts "\n---- Rolling ----"
   new_array = @roulette_array.sample
@@ -341,7 +341,7 @@ end
 def roulette_multiplayer
   puts `clear`
   roulette_logo
-  if @player_1.money < 1 || @player_2.money < 1
+  if @current_player.money < 1 || @other_player.money < 1
     puts "\nYou dont have enough money to play Roulette!"
     puts "Get more and come back!"
     sleep 3
@@ -349,9 +349,9 @@ def roulette_multiplayer
   else
   end
   puts
-  puts "#{@player_1.name} Cash on hand: #{@player_1.money}                 #{@player_2.name} Cash on hand: #{@player_2.money}"
+  puts "#{@current_player.name} Cash on hand: #{@current_player.money}                 #{@other_player.name} Cash on hand: #{@other_player.money}".colorize(:light_green)
   puts
-  puts "#{@player_1.name}, How much money are you wanting to wager? Wager 0 to return to menu"
+  puts "#{@current_player.name}, How much money are you wanting to wager? Wager 0 to return to menu"
   @wager1 = gets.strip.to_i
   if @wager1 == 0
     puts "Come Back Later!"
@@ -359,14 +359,14 @@ def roulette_multiplayer
     roulette_menu
   else
   end
-  if @wager1 > @player_1.money
+  if @wager1 > @current_player.money
     puts "\nYou can't wager more money than you have!"
     sleep 2
     roulette_multiplayer
   else
   end
   puts
-  puts "#{@player_2.name}, How much money are you wanting to wager? Wager 0 to return to menu"
+  puts "#{@other_player.name}, How much money are you wanting to wager? Wager 0 to return to menu"
   @wager2 = gets.strip.to_i
   if @wager2 == 0
     puts "Come Back Later!"
@@ -374,7 +374,7 @@ def roulette_multiplayer
     roulette_menu
   else
   end
-  if @wager2 > @player_2.money
+  if @wager2 > @other_player.money
     puts "\nYou can't wager more money than you have!"
     sleep 2
     roulette_multiplayer
@@ -426,7 +426,7 @@ def multi_betting
   puts `clear`
   roulette_logo
   puts
-  puts "#{@player_1.name} Current Wager: #{@wager1}                       #{@player_2.name} Current Wager: #{@wager2}".colorize(:light_yellow)
+  puts "#{@current_player.name} Current Wager: $#{@wager1}                       #{@other_player.name} Current Wager: $#{@wager2}".colorize(:light_yellow)
   puts "\n\n~~~ Betting ~~~."
   puts "1: Straight Up"
   puts "2: Odd"
@@ -435,11 +435,11 @@ def multi_betting
   puts "5: Black"
   puts "6: Exit"
   puts
-  puts "#{@player_1.name}, how would you like to bet?"
+  puts "#{@current_player.name}, how would you like to bet?"
   @bet1 = gets.strip.downcase
   multi_1_straight
   puts
-  puts "#{@player_2.name}, how would you like to bet?"
+  puts "#{@other_player.name}, how would you like to bet?"
   @bet2 = gets.strip.downcase
   multi_2_straight
 end
@@ -477,18 +477,18 @@ def multi_begin
   roulette_logo
   puts
   if @bet1 == "1"
-    puts "#{@player_1.name} bet on #{@my_straight_1}"
+    puts "#{@current_player.name} bet on #{@my_straight_1}"
   else
-    puts "#{@player_1.name} bet on #{@bet1}"
+    puts "#{@current_player.name} bet on #{@bet1}"
   end
-  puts "Your wager is #{@wager1}".colorize(:light_yellow)
+  puts "Your wager is $#{@wager1}".colorize(:light_yellow)
   puts
   if @bet2 == "1"
-    puts "#{@player_2.name} bet on #{@my_straight_2}"
+    puts "#{@other_player.name} bet on #{@my_straight_2}"
   else
-    puts "#{@player_2.name} bet on #{@bet2} "
+    puts "#{@other_player.name} bet on #{@bet2} "
   end
-  puts "Your wager is #{@wager2}".colorize(:light_yellow)
+  puts "Your wager is $#{@wager2}".colorize(:light_yellow)
   puts
   sleep 2
   puts "\n---- Rolling ----"
@@ -504,12 +504,12 @@ def multi_begin
   sleep 2
   if @bet1 == "Odd"
     if @bet1 == new_array[2]
-      puts "\nCongrats #{@player_1.name}! You won $#{@wager1}!"
-      @player_1.money = (@player_1.money + @wager1)
+      puts "\nCongrats #{@current_player.name}! You won $#{@wager1}!"
+      @current_player.money = (@current_player.money + @wager1)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_1.name}! You lost $#{@wager1}."
-      @player_1.money = (@player_1.money - @wager1)
+      puts "\nBetter luck next time #{@current_player.name}! You lost $#{@wager1}."
+      @current_player.money = (@current_player.money - @wager1)
       sleep 3
     end
   else
@@ -517,12 +517,12 @@ def multi_begin
 
   if @bet1 == "Even"
     if @bet1 == new_array[2]
-      puts "\nCongrats #{@player_1.name}! You won $#{@wager1}!"
-      @player_1.money = (@player_1.money + @wager1)
+      puts "\nCongrats #{@current_player.name}! You won $#{@wager1}!"
+      @current_player.money = (@current_player.money + @wager1)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_1.name}! You lost $#{@wager1}."
-      @player_1.money = (@player_1.money - @wager1)
+      puts "\nBetter luck next time #{@current_player.name}! You lost $#{@wager1}."
+      @current_player.money = (@current_player.money - @wager1)
       sleep 3
     end
   else
@@ -530,12 +530,12 @@ def multi_begin
 
   if @bet1 == "Red"
     if @bet1 == new_array[1]
-      puts "\nCongrats #{@player_1.name}! You won $#{@wager1}!"
-      @player_1.money = (@player_1.money + @wager1)
+      puts "\nCongrats #{@current_player.name}! You won $#{@wager1}!"
+      @current_player.money = (@current_player.money + @wager1)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_1.name}! You lost $#{@wager1}."
-      @player_1.money = (@player_1.money - @wager1)
+      puts "\nBetter luck next time #{@current_player.name}! You lost $#{@wager1}."
+      @current_player.money = (@current_player.money - @wager1)
       sleep 3
     end
   else
@@ -543,12 +543,12 @@ def multi_begin
 
   if @bet1 == "Black"
     if @bet1 == new_array[1]
-      puts "\nCongrats #{@player_1.name}! You won $#{@wager1}!"
-      @player_1.money = (@player_1.money + @wager1)
+      puts "\nCongrats #{@current_player.name}! You won $#{@wager1}!"
+      @current_player.money = (@current_player.money + @wager1)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_1.name}! You lost $#{@wager1}."
-      @player_1.money = (@player_1.money - @wager1)
+      puts "\nBetter luck next time #{@current_player.name}! You lost $#{@wager1}."
+      @current_player.money = (@current_player.money - @wager1)
       sleep 3
     end
   else
@@ -556,12 +556,12 @@ def multi_begin
 
   if @bet1 == "1"
     if @my_straight_1 == new_array[2]
-      puts "\nCongrats #{@player_1.name}! You won $#{@wager1 * 35}!"
-      @player_1.money = (@player_1.money + (@wager1 * 35))
+      puts "\nCongrats #{@current_player.name}! You won $#{@wager1 * 35}!"
+      @current_player.money = (@current_player.money + (@wager1 * 35))
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_1.name}! You lost $#{@wager1}."
-      @player_1.money = (@player_1.money - @wager1)
+      puts "\nBetter luck next time #{@current_player.name}! You lost $#{@wager1}."
+      @current_player.money = (@current_player.money - @wager1)
       sleep 3
     end
   else
@@ -569,12 +569,12 @@ def multi_begin
     puts
   if @bet2 == "Odd"
     if @bet2 == new_array[2]
-      puts "\nCongrats #{@player_2.name}! You won $#{@wager2}!"
-      @player_2.money = (@player_2.money + @wager2)
+      puts "\nCongrats #{@other_player.name}! You won $#{@wager2}!"
+      @other_player.money = (@other_player.money + @wager2)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_2.name}! You lost $#{@wager2}."
-      @player_2.money = (@player_2.money - @wager2)
+      puts "\nBetter luck next time #{@other_player.name}! You lost $#{@wager2}."
+      @other_player.money = (@other_player.money - @wager2)
       sleep 3
     end
   else
@@ -582,12 +582,12 @@ def multi_begin
 
   if @bet2 == "Even"
     if @bet2 == new_array[2]
-      puts "\nCongrats #{@player_2.name}! You won $#{@wager2}!"
-      @player_2.money = (@player_2.money + @wager2)
+      puts "\nCongrats #{@other_player.name}! You won $#{@wager2}!"
+      @other_player.money = (@other_player.money + @wager2)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_2.name}! You lost $#{@wager2}."
-      @player_2.money = (@player_2.money - @wager2)
+      puts "\nBetter luck next time #{@other_player.name}! You lost $#{@wager2}."
+      @other_player.money = (@other_player.money - @wager2)
       sleep 3
     end
   else
@@ -595,12 +595,12 @@ def multi_begin
 
   if @bet2 == "Red"
     if @bet2 == new_array[1]
-      puts "\nCongrats #{@player_2.name}! You won $#{@wager2}!"
-      @player_2.money = (@player_2.money + @wager2)
+      puts "\nCongrats #{@other_player.name}! You won $#{@wager2}!"
+      @other_player.money = (@other_player.money + @wager2)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_2.name}! You lost $#{@wager2}."
-      @player_2.money = (@player_2.money - @wager2)
+      puts "\nBetter luck next time #{@other_player.name}! You lost $#{@wager2}."
+      @other_player.money = (@other_player.money - @wager2)
       sleep 3
     end
   else
@@ -608,12 +608,12 @@ def multi_begin
 
   if @bet2 == "Black"
     if @bet2 == new_array[1]
-      puts "\nCongrats #{@player_2.name}! You won $#{@wager2}!"
-      @player_2.money = (@player_2.money + @wager2)
+      puts "\nCongrats #{@other_player.name}! You won $#{@wager2}!"
+      @other_player.money = (@other_player.money + @wager2)
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_2.name}! You lost $#{@wager2}."
-      @player_2.money = (@player_2.money - @wager2)
+      puts "\nBetter luck next time #{@other_player.name}! You lost $#{@wager2}."
+      @other_player.money = (@other_player.money - @wager2)
       sleep 3
     end
   else
@@ -621,12 +621,12 @@ def multi_begin
 
   if @bet2 == "1"
     if @my_straight_2 == new_array[2]
-      puts "\nCongrats #{@player_2.name}! You won $#{@wager2 * 35}!"
-      @player_2.money = (@player_2.money + (@wager2 * 35))
+      puts "\nCongrats #{@other_player.name}! You won $#{@wager2 * 35}!"
+      @other_player.money = (@other_player.money + (@wager2 * 35))
       sleep 3
     else
-      puts "\nBetter luck next time #{@player_2.name}! You lost $#{@wager2}."
-      @player_2.money = (@player_2.money - @wager2)
+      puts "\nBetter luck next time #{@other_player.name}! You lost $#{@wager2}."
+      @other_player.money = (@other_player.money - @wager2)
       sleep 3
     end
   else

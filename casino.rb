@@ -76,7 +76,7 @@ def player_selection
     when "2", "#{@player_2.name}"
       puts "You have selected to play with #{@player_2.name}!"
       @current_player = @player_2
-      @other_player = @player_2
+      @other_player = @player_1
       sleep 2
       greeting
     when "3", "exit"
