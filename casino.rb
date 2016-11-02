@@ -13,7 +13,9 @@ require_relative 'josh_cards'
 
 @winning_sound = Sounder::Sound.new "assets/winning.mp3" # @winning_sound.play to use
 @losing_sound = Sounder::Sound.new "assets/losing.mp3" # @losing_sound.play to use
+@wahwah_sound = Sounder::Sound.new "assets/wahwah_lose.mp3" # @wahwah_sound.play to use
 @money_sound = Sounder::Sound.new "assets/cashmoney.mp3" # @money_sound.play to use
+@shuffle_sound = Sounder::Sound.new "assets/card_shuffle.mp3" # @shuffle_sound.play to use
 
 class Casino
   attr_accessor :name, :location, :minimum_age, :value

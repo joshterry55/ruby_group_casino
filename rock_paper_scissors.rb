@@ -211,6 +211,7 @@ def win_lose_image
 		puts "---.__(___)                (__________.--- "
 		sleep 1.5
 		puts "You threw ROCK and dealer threw PAPER. You lose!".colorize(:red)
+		@wahwah_sound.play
 		@message_code_rps = 4
 	end
 	if @player_sign == 1 && @computer_sign == 3
@@ -224,6 +225,7 @@ def win_lose_image
 		puts "---.__(___)                    (___)__.--- "
 		sleep 1.5
 		puts "You threw ROCK and dealer threw SCISSORS. You win $#{@current_bet_rps * 3}!".colorize(:green)
+		@money_sound.play
 		@current_player.money += @current_bet_rps * 3
 		@message_code_rps = 5
 	end
@@ -238,6 +240,7 @@ def win_lose_image
 		puts "---.__________)                (___)__.--- "
 		sleep 1.5
 		puts "You threw PAPER and dealer threw ROCK. You win $#{@current_bet_rps * 3}!".colorize(:green)
+		@money_sound.play
 		@current_player.money += @current_bet_rps * 3
 		@message_code_rps = 5
 	end
@@ -265,6 +268,7 @@ def win_lose_image
 		puts "---.__________)                (___)__.--- "
 		sleep 1.5
 		puts "You threw PAPER and dealer threw SCISSORS. You lose!".colorize(:red)
+		@wahwah_sound.play
 		@message_code_rps = 4
 	end
 	if @player_sign == 3 && @computer_sign == 1
@@ -278,6 +282,7 @@ def win_lose_image
 		puts "---.______)                    (___)__.--- "
 		sleep 1.5
 		puts "You threw SCISSORS and dealer threw ROCK. You lose!".colorize(:red)
+		@wahwah_sound.play
 		@message_code_rps = 4
 	end
 	if @player_sign == 3 && @computer_sign == 2
@@ -291,6 +296,7 @@ def win_lose_image
 		puts "---.______)                (__________.--- "
 		sleep 1.5
 		puts "You threw SCISSORS and dealer threw PAPER. You win $#{@current_bet_rps * 3}!".colorize(:green)
+		@money_sound.play
 		@current_player.money += @current_bet_rps * 3
 		@message_code_rps = 5
 	end
