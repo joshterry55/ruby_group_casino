@@ -1,5 +1,6 @@
 @current_bet = 1
 @spin = [0, 0, 0]
+@spin_spot = 3
 @message_code = 0
 @slots_game_sound = Sounder::Sound.new "assets/slots2.mp3"
 @lever_sound = Sounder::Sound.new "assets/lever.mp3"
@@ -7,20 +8,30 @@
 def show_slots_logo
   puts `clear`
   puts 
-puts "     _       _                        _     _            ".colorize(:light_green)
-puts "    | |     | |                      | |   (_)           ".colorize(:light_green)
-puts " ___| | ___ | |_ _ __ ___   __ _  ___| |__  _ _ __   ___ ".colorize(:light_green)
-puts "/ __| |/ _ \\| __| '_ ` _ \\ / _` |/ __| '_ \\| | '_ \\ / _ \\ ".colorize(:light_green)
-puts "\\__ \\ | (_) | |_| | | | | | (_| | (__| | | | | | | |  __/".colorize(:green)
-puts "|___/_|\\___/ \\__|_| |_| |_|\\__,_|\\___|_| |_|_|_| |_|\\___|".colorize(:green)
-puts "                                           at #{@casino_1.name}"
-puts
+  puts "     _       _                        _     _            ".colorize(:light_green)
+  puts "    | |     | |                      | |   (_)           ".colorize(:light_green)
+  puts " ___| | ___ | |_ _ __ ___   __ _  ___| |__  _ _ __   ___ ".colorize(:light_green)
+  puts "/ __| |/ _ \\| __| '_ ` _ \\ / _` |/ __| '_ \\| | '_ \\ / _ \\ ".colorize(:light_green)
+  puts "\\__ \\ | (_) | |_| | | | | | (_| | (__| | | | | | | |  __/".colorize(:green)
+  puts "|___/_|\\___/ \\__|_| |_| |_|\\__,_|\\___|_| |_|_|_| |_|\\___|".colorize(:green)
+  puts "                                           at #{@casino_1.name}"
   if @spin[1] == 0 
-      show_default_slots
-      @slots_game_sound.play
-    else
-      puts puts "                    [ #{@spin[0]} ]|[ #{@spin[1]} ]|[ #{@spin[2]} ]"
-    end
+     show_default_slots
+     @slots_game_sound.play
+  else
+     puts "                    [ #{@spin[0]} ]|[ #{@spin[1]} ]|[ #{@spin[2]} ]"
+  end
+  case @spin_spot
+  when 1
+    puts "                      ^".colorize(:green)
+  when 2
+    puts "                      ^     ^".colorize(:green)
+  when 3
+    puts "                      ^     ^     ^".colorize(:green)
+  else
+    puts
+  end
+  puts
   show_current_bet
   show_message_code
   ask_for_bet if @message_code != 4
@@ -32,36 +43,23 @@ def show_message_code
     puts
     if @spin[0] != 0
       puts "No winnings this round.".colorize(:red)
-    else
-      puts
     end
-    puts
   when 1
-    puts
     puts "You do not have the funds to make that bet.".colorize(:magenta)
-    puts
   when 2
-    puts
-    puts "Two consecutive #{@spin[1]}'s! You win $#{(@current_bet + 1) * (@current_bet + 1)}!".colorize(:light_blue)
-    puts
+    puts "Two consecutive #{@spin[1]}'s! You win $#{(@current_bet * 7)}!".colorize(:light_blue)
   when 3
-    puts
-    puts "Three #{@spin[0]}'s! You win #{(@current_bet * 10) * (@current_bet * 10)}!".colorize(:green)
-    puts
+    puts "Three #{@spin[0]}'s! You win $#{((@current_bet * 10) * (@current_bet * 10) + 50)}!".colorize(:green)
   when 4
-    puts
     puts "Spinning..."
-    puts
   when 5
-    puts
     puts "Not a valid bet amount, bet 1 - 5 dollars!".colorize(:magenta)
-    puts
   end
+  puts
 end
 
 def show_default_slots
   puts "                    [ 3 ]|[ 3 ]|[ 3 ]"
-  puts
 end
 
 def show_current_bet
@@ -102,11 +100,15 @@ def spin_slots
   @lever_sound.play
   @current_player.money -= @current_bet
   @spin = [0, 0, 0]
-  (0..44).each do |i|
-    @spin[0] = 1 + rand(5) if i < 15
-    @spin[1] = 1 + rand(5) if i < 30
+  (0..49).each do |i|
+    @spin[0] = 1 + rand(5) if i < 20
+    @spin[1] = 1 + rand(5) if i < 35
     @spin[2] = 1 + rand(5)
     @message_code = 4
+    @spin_spot = 0 if i < 20
+    @spin_spot = 1 if i > 19 && i < 35
+    @spin_spot = 2 if i > 34 && i < 49
+    @spin_spot = 3 if i == 49
     show_slots_logo
     sleep 0.05
   end
@@ -116,17 +118,17 @@ def spin_slots
   if @spin[0] == @spin[1] && @spin[0] == @spin[2]
     @winning_sound.play
     @message_code = 3
-    @current_player.money += (@current_bet * 10) * (@current_bet * 10)
+    @current_player.money += ((@current_bet * 10) * (@current_bet * 10) + 50)
     show_slots_logo
   elsif @spin[0] == @spin[1] && @spin[0] != @spin[2]
     @winning_sound.play
     @message_code = 2
-    @current_player.money += (@current_bet + 1) * (@current_bet + 1)
+    @current_player.money += (@current_bet * 7)
     show_slots_logo
   elsif @spin[1] == @spin[2] && @spin[0] != @spin[2]
     @winning_sound.play
     @message_code = 2
-    @current_player.money += (@current_bet + 1) * (@current_bet + 1)
+    @current_player.money += (@current_bet * 7)
     show_slots_logo
   else
     @losing_sound.play
