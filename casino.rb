@@ -8,6 +8,7 @@ require_relative 'high_low'
 require_relative 'blackjack'
 require_relative 'roulette'
 require_relative 'rock_paper_scissors'
+require_relative 'blackjack_deck'
 
 require_relative 'josh_cards'
 
