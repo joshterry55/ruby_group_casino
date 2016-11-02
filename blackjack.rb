@@ -1,32 +1,3 @@
-require 'pry'
-require 'colorize'
-
-class Card
-  attr_accessor :rank, :suit
-  def initialize(rank, suit)
-   @rank = rank
-   @suit = suit
-  end
-end
-
-class Deck
-  attr_accessor :cards
-  def initialize
-    @ranks = %w(A 2 3 4 5 6 7 8 9 10 J Q K)
-    @suits = %w(Spades Diamonds Clubs Hearts)
-    @cards = []
-    generate_deck
-  end
- 
- def generate_deck
-   @suits.each do |suit|
-     @ranks.size.times do |i|
-       @cards << Card.new(@ranks[i], suit)
-      end
-    end
-  end
-end
-
 @bet_amount = 0
 
 def blackjack_logo
@@ -39,17 +10,20 @@ puts "   | :\\/: |    ██╔══██╗██║     ██╔══█�
 puts "   | '-- A|    ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗╚█████╔╝██║  ██║╚██████╗██║  ██╗   | '--'J|  ".colorize(:light_yellow) 
 puts "   `------'    ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   `------'  ".colorize(:yellow)                                                                                                                                        
 puts      
-puts      
-puts "               Your Balance: $#{@current_player.money}                                          Your Bet: $#{@bet_amount}".colorize(:light_yellow)
 puts 
 puts 
 end
 
+def balance_bet_menu    
+puts "              Your Bet: $#{@bet_amount}                                        Your Balance: $#{@current_player.money}".colorize(:light_yellow)
+puts
+puts
+end
 
 def blackjack_menu
-  # print `clear`
   blackjack_color_move
   blackjack_logo
+  balance_bet_menu
   puts "Welcome to Ruby BLACKJACK!"
   puts "Take a seat and lets get started."
   puts "1) Play Blackjack"
@@ -57,10 +31,11 @@ def blackjack_menu
   print "> "
   case gets.strip
   when '1'
+    @shuffle_sound.play
     blackjack_logo
-    puts "Alright! Lets begin!"
-    bet
-    # deal
+    balance_bet_menu
+    player_bet
+    # deck_deal
   when '2'
     ruby_casino_menu
   else
@@ -69,7 +44,9 @@ def blackjack_menu
   end
 end
  
-def bet
+def player_bet  
+    blackjack_logo
+    balance_bet_menu
   if @current_player.money < 5
     puts "Sorry, the table minimum is 5 and you are unable to play."
     ruby_casino_menu
@@ -81,24 +58,31 @@ def bet
   @bet_amount = gets.strip.to_i
   if @bet_amount < 5 || @bet_amount > @current_player.money
     puts 'Sorry that is an invalid amount!'
-    bet 
+    player_bet
   else 
-    deal
+    deck_deal
   end
 end
+# TODO: end loop if player doesnt have enough money
 
-def deal
-  puts `clear`
-  blackjack_logo
+def deck_deal
+  blackjack_logo  
+  balance_bet_menu
   d = Deck.new
   @d_shuffle = d.cards.shuffle
   @player_hand = @d_shuffle.pop(2)
   @dealer_hand = @d_shuffle.pop(2)
   # puts "You have #{@player_hand[0].rank} of #{@player_hand[0].suit} and #{@player_hand[1].rank} of #{@player_hand[1].suit}."
-  puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :blue, :mode => :bold)
-  puts "---------------------" 
+  dealers_show_card
+  puts
   compute_dealer_hand
   compute_player_hand
+end
+
+def dealers_show_card
+    puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :blue, :mode => :bold)
+    puts
+    puts "---------------------" 
 end
 
 def compute_player_hand
@@ -112,22 +96,21 @@ def compute_player_hand
     end 
     @player_total += x.rank.to_i
   end
-  hit_bust
+  hit_or_bust
 end
 
-def hit_bust
-  puts "Your total is #{@player_total}."
+def hit_or_bust
+    player_total_meth
     if @player_total > 21
-      puts "You busted!".colorize(:light_red)
-      puts "#{@bet_amount} subtracted".colorize(:light_red)
+      puts "YOU BUSTED! You lose #{@bet_amount}".colorize(:light_red)
       gets.strip
-      # sleep(3)
       @current_player.money -= @bet_amount 
-      blackjack_menu
+      player_bet
     elsif @player_total == 21
-      puts "BLACKJACK! YOU WIN!"
+        puts "YOU WIN!"
+      # puts "BLACKJACK! YOU WIN!"
       gets.strip
-      blackjack_menu
+      player_bet
     else
       puts
       puts "Do you want to hit? (y or n)"
@@ -135,24 +118,20 @@ def hit_bust
       case gets.strip.downcase 
       when 'y'
         blackjack_logo
-          puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :blue, :mode => :bold)
-          puts "---------------------" 
+        dealers_show_card
         card_compare
         # compute_player_hand
       when 'n'
-        blackjack_logo
-        puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :blue, :mode => :bold)
-        puts "---------------------" 
-        @player_hand.each do |x|
-        puts "#{@current_player.name}: #{x.rank} of #{x.suit}."
-        end
-        puts "Your total is #{@player_total}.".colorize(:background => :light_yellow, :color => :blue)
         puts
         dealer_show
       else 
         puts "Invalid. Try again."
       end
     end
+end
+
+def player_total_meth
+    puts "Your total is: #{@player_total}".colorize(:color => :light_cyan, :mode => :underline)
 end
 
 def blackjack_win
@@ -170,23 +149,34 @@ def card_compare
     # @current_player.money += @bet_amount += bj_win  # BLACKJACK WORK?
     gets.strip
   elsif @player_total > 21
-    puts "You have busted!".colorize(:light_red)
-    puts "#{@bet_amount} subtracted".colorize(:light_red)
+    puts
+    puts "BUSTED! You lose! $#{bet_amount}".colorize(:light_red)
     # sleep(3)
     gets.strip
     @current_player.money -= @bet_amount
-    deal
+    deck_deal
   end
 end
 
-def compute_dealer_hand
-  @blackjack_logo
-    puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :blue, :mode => :bold)
-    puts "---------------------" 
+def show_player_hand
     @player_hand.each do |x|
-    puts "#{@current_player.name}: #{x.rank} of #{x.suit}."
+        puts "#{@current_player.name}: #{x.rank} of #{x.suit}."
     end
-    puts "Your total is #{@player_total}.".colorize(:background => :light_yellow, :color => :blue)
+end
+
+def compute_dealer_hand
+  @dealer_total = 0
+  @dealer_hand.each do |x|
+    if (x.rank == 'J' || x.rank == 'Q' || x.rank == 'K')
+      x.rank = 10
+    elsif ( x.rank == 'A')
+      x.rank = 11
+    end 
+    @dealer_total += x.rank.to_i
+  end
+end
+
+def compute_dealer_hand_second
     puts
   @dealer_total = 0
   @dealer_hand.each do |x|
@@ -197,71 +187,67 @@ def compute_dealer_hand
     end 
     @dealer_total += x.rank.to_i
   end
+  print "Push ENTER > "
+  gets.strip
   # puts "The dealer's total is #{dealer_total}"
 end
 
-def dealer_show
-# compute_dealer_hand
-  if @dealer_total < 17 
+def print_dealer_hand
     @dealer_hand.each do |x|
-      puts "Dealer: #{x.rank} of #{x.suit}."
+        puts "Dealer: #{x.rank} of #{x.suit}."
     end
-    # @player_hand << @d_shuffle.pop
-    puts "#{@dealer_total}"
-    # compute_dealer_hand
+end
+
+def dealer_show
+  blackjack_logo
+  balance_bet_menu   
+  if @dealer_total < 17 
+    show_player_hand
+    player_total_meth
+    puts
+    print_dealer_hand
+    puts "Dealer total: #{@dealer_total}"
     @dealer_hand << @d_shuffle.pop
-    compute_dealer_hand
-    #     @dealer_hand.each do |x|
-    #   puts "                      Dealer: #{x.rank} of #{x.suit}."
-    # end
-    # puts "                      #{@dealer_total}"
+    compute_dealer_hand_second
     dealer_show
-    # binding.pry
    elsif @dealer_total >= 17 && @dealer_total <= 21
-      @dealer_hand.each do |x|
-      puts "Dealer: #{x.rank} of #{x.suit}."
-      end
-      compute_dealer_hand
-      puts "#{@dealer_total}"
-      declare_winner
+    show_player_hand
+    player_total_meth
+    puts
+    print_dealer_hand  
+    compute_dealer_hand
+    puts "Dealer total: #{@dealer_total}"
+    declare_winner
   elsif @dealer_total > 21 
-          @dealer_hand.each do |x|
-      puts "Dealer: #{x.rank} of #{x.suit}."
-      end
-      compute_dealer_hand
-      puts "#{@dealer_total}"
-    puts "The dealer busted! You WIN!".colorize(:light_green)
-    puts "#{@bet_amount} added".colorize(:light_green)
-    # sleep(3)
+    show_player_hand
+    player_total_meth
+    puts
+    print_dealer_hand
+    compute_dealer_hand
+    puts "Dealer total: #{@dealer_total}"
+    puts "THE DEALER BUSTED! You win $#{@bet_amount}".colorize(:light_green)
+    print "Press ENTER > "
     gets.strip
     @current_player.money += @bet_amount
-    bet
-  end
-  
+    player_bet
+  end 
  end
 
  def declare_winner
   if @player_total > @dealer_total 
-    puts "You WIN!".colorize(:light_green)
-    puts "#{@bet_amount} added".colorize(:light_green)
-    # sleep(3)
+    puts "YOU BEAT THE DEALER! You win $#{@bet_amount}!".colorize(:light_green)
     gets.strip
     @current_player.money += @bet_amount
-    blackjack_menu
+    player_bet
   elsif @player_total < @dealer_total
-    puts "You LOSE!".colorize(:light_red)
-    puts "#{@bet_amount} subtracted".colorize(:light_red)
-    # sleep(3)
+    puts "THE DEALER BEAT YOU! You lose $#{@bet_amount}".colorize(:light_red)
     gets.strip
     @current_player.money -= @bet_amount
-    blackjack_menu
+    player_bet
   elsif @player_total == @dealer_total
-    puts "You PUSH!"#.colorize(:light_green)
-    puts "You lose nothing."
-    # sleep(3)
-    gets.strip
-    # homer  
-    blackjack_menu
+    puts "YOU PUSHED! You get your bet back"#.colorize(:light_green)
+    gets.strip  
+    player_bet
   end
  end
 
@@ -356,6 +342,14 @@ end
 # - if the dealer has 21 they auto win
 # - card shuffle sound?
 # - BLACKJACK shuffle colors?
+# - Dealer wins if he starts with 21
+    # - push if player also has 21 at start
+
+
+
+
+
+
 # def homer
 # puts
 # puts
