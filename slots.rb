@@ -4,6 +4,7 @@
 @message_code = 0
 @slots_game_sound = Sounder::Sound.new "assets/slots2.mp3"
 @lever_sound = Sounder::Sound.new "assets/lever.mp3"
+@ting_sound = Sounder::Sound.new "assets/ting.mp3"
 
 def show_slots_logo
   puts `clear`
@@ -101,15 +102,18 @@ def spin_slots
   @current_player.money -= @current_bet
   @spin = [0, 0, 0]
   (0..49).each do |i|
-    @spin[0] = 1 + rand(5) if i < 20
-    @spin[1] = 1 + rand(5) if i < 35
-    @spin[2] = 1 + rand(5)
+    @spin[0] = 1 + rand(7) if i < 20
+    @spin[1] = 1 + rand(7) if i < 35
+    @spin[2] = 1 + rand(7)
     @message_code = 4
     @spin_spot = 0 if i < 20
     @spin_spot = 1 if i > 19 && i < 35
     @spin_spot = 2 if i > 34 && i < 49
     @spin_spot = 3 if i == 49
     show_slots_logo
+    @ting_sound.play if i == 19
+    @ting_sound.play if i == 34
+    @ting_sound.play if i == 49
     sleep 0.05
   end
 
