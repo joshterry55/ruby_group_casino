@@ -48,6 +48,7 @@ end
 
 def blackjack_menu
   # print `clear`
+  blackjack_color_move
   blackjack_logo
   puts "Welcome to Ruby BLACKJACK!"
   puts "Take a seat and lets get started."
@@ -94,7 +95,7 @@ def deal
   @player_hand = @d_shuffle.pop(2)
   @dealer_hand = @d_shuffle.pop(2)
   # puts "You have #{@player_hand[0].rank} of #{@player_hand[0].suit} and #{@player_hand[1].rank} of #{@player_hand[1].suit}."
-  puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :black, :background => :white, :mode => :bold)
+  puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :blue, :mode => :bold)
   puts "---------------------" 
   compute_dealer_hand
   compute_player_hand
@@ -119,11 +120,13 @@ def hit_bust
     if @player_total > 21
       puts "You busted!".colorize(:light_red)
       puts "#{@bet_amount} subtracted".colorize(:light_red)
-      sleep(3)
+      gets.strip
+      # sleep(3)
       @current_player.money -= @bet_amount 
       blackjack_menu
     elsif @player_total == 21
       puts "BLACKJACK! YOU WIN!"
+      gets.strip
       blackjack_menu
     else
       puts
@@ -131,10 +134,21 @@ def hit_bust
       print "> "
       case gets.strip.downcase 
       when 'y'
+        blackjack_logo
+          puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :blue, :mode => :bold)
+          puts "---------------------" 
         card_compare
         # compute_player_hand
       when 'n'
-        dealer_show 
+        blackjack_logo
+        puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :blue, :mode => :bold)
+        puts "---------------------" 
+        @player_hand.each do |x|
+        puts "#{@current_player.name}: #{x.rank} of #{x.suit}."
+        end
+        puts "Your total is #{@player_total}.".colorize(:background => :light_yellow, :color => :blue)
+        puts
+        dealer_show
       else 
         puts "Invalid. Try again."
       end
@@ -142,6 +156,7 @@ def hit_bust
 end
 
 def blackjack_win
+  # player_hand.length == 2?
 end
 
 def card_compare
@@ -157,13 +172,22 @@ def card_compare
   elsif @player_total > 21
     puts "You have busted!".colorize(:light_red)
     puts "#{@bet_amount} subtracted".colorize(:light_red)
-    sleep(3)
+    # sleep(3)
+    gets.strip
     @current_player.money -= @bet_amount
     deal
   end
 end
 
 def compute_dealer_hand
+  @blackjack_logo
+    puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :blue, :mode => :bold)
+    puts "---------------------" 
+    @player_hand.each do |x|
+    puts "#{@current_player.name}: #{x.rank} of #{x.suit}."
+    end
+    puts "Your total is #{@player_total}.".colorize(:background => :light_yellow, :color => :blue)
+    puts
   @dealer_total = 0
   @dealer_hand.each do |x|
     if (x.rank == 'J' || x.rank == 'Q' || x.rank == 'K')
@@ -208,7 +232,8 @@ def dealer_show
       puts "#{@dealer_total}"
     puts "The dealer busted! You WIN!".colorize(:light_green)
     puts "#{@bet_amount} added".colorize(:light_green)
-    sleep(3)
+    # sleep(3)
+    gets.strip
     @current_player.money += @bet_amount
     bet
   end
@@ -219,23 +244,113 @@ def dealer_show
   if @player_total > @dealer_total 
     puts "You WIN!".colorize(:light_green)
     puts "#{@bet_amount} added".colorize(:light_green)
-    sleep(3)
+    # sleep(3)
+    gets.strip
     @current_player.money += @bet_amount
     blackjack_menu
   elsif @player_total < @dealer_total
     puts "You LOSE!".colorize(:light_red)
     puts "#{@bet_amount} subtracted".colorize(:light_red)
-    sleep(3)
+    # sleep(3)
+    gets.strip
     @current_player.money -= @bet_amount
     blackjack_menu
   elsif @player_total == @dealer_total
     puts "You PUSH!"#.colorize(:light_green)
     puts "You lose nothing."
-    sleep(3)
+    # sleep(3)
+    gets.strip
     # homer  
     blackjack_menu
   end
  end
+
+def blackjack_color_move
+    (1..15).each do |x|
+        case x
+        when 1
+            blackjack_color1
+            sleep 0.12
+        when 2
+            blackjack_color2
+            sleep 0.12
+        when 3
+            blackjack_color3
+            sleep 0.12
+        when 4
+            blackjack_color1
+            sleep 0.12
+        when 5
+            blackjack_color2
+            sleep 0.12
+        when 6
+            blackjack_color3
+            sleep 0.12
+        when 7
+            blackjack_color1
+            sleep 0.12
+        when 8
+            blackjack_color2
+            sleep 0.12
+        when 9
+            blackjack_color3
+            sleep 0.12
+        when 10
+            blackjack_color1
+            sleep 0.12
+        when 11
+            blackjack_color2
+            sleep 0.12
+        when 12
+            blackjack_color3
+            sleep 0.12
+        when 13
+            blackjack_color1
+            sleep 0.12
+        when 14
+            blackjack_color2
+            sleep 0.12
+        when 15
+            blackjack_color3
+            sleep 0.12
+            blackjack_logo
+        end
+      end
+end
+
+
+def blackjack_color1
+puts `clear`
+puts "   .------.    ██████╗ ██╗      █████╗  ██████╗██╗  ██╗     ██╗ █████╗  ██████╗██╗  ██╗   .------.  ".colorize(:red) 
+puts "   |A.--. |    ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝     ██║██╔══██╗██╔════╝██║ ██╔╝   |J.--. |  ".colorize(:light_red) 
+puts "   | (\\/) |    ██████╔╝██║     ███████║██║     █████╔╝      ██║███████║██║     █████╔╝    | :/\\: |  ".colorize(:light_red) 
+puts "   | :\\/: |    ██╔══██╗██║     ██╔══██║██║     ██╔═██╗ ██   ██║██╔══██║██║     ██╔═██╗    | :\\/: |  ".colorize(:light_yellow) 
+puts "   | '-- A|    ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗╚█████╔╝██║  ██║╚██████╗██║  ██╗   | '--'J|  ".colorize(:light_yellow) 
+puts "   `------'    ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   `------'  ".colorize(:yellow)                                                                                                                                        
+end
+
+def blackjack_color2
+puts `clear`
+puts "   .------.    ██████╗ ██╗      █████╗  ██████╗██╗  ██╗     ██╗ █████╗  ██████╗██╗  ██╗   .------.  ".colorize(:yellow) 
+puts "   |A.--. |    ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝     ██║██╔══██╗██╔════╝██║ ██╔╝   |J.--. |  ".colorize(:yellow) 
+puts "   | (\\/) |    ██████╔╝██║     ███████║██║     █████╔╝      ██║███████║██║     █████╔╝    | :/\\: |  ".colorize(:red) 
+puts "   | :\\/: |    ██╔══██╗██║     ██╔══██║██║     ██╔═██╗ ██   ██║██╔══██║██║     ██╔═██╗    | :\\/: |  ".colorize(:red) 
+puts "   | '-- A|    ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗╚█████╔╝██║  ██║╚██████╗██║  ██╗   | '--'J|  ".colorize(:light_red) 
+puts "   `------'    ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   `------'  ".colorize(:light_red)                                                                                                                                        
+end
+
+def blackjack_color3
+puts `clear`
+puts "   .------.    ██████╗ ██╗      █████╗  ██████╗██╗  ██╗     ██╗ █████╗  ██████╗██╗  ██╗   .------.  ".colorize(:light_yellow) 
+puts "   |A.--. |    ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝     ██║██╔══██╗██╔════╝██║ ██╔╝   |J.--. |  ".colorize(:light_yellow) 
+puts "   | (\\/) |    ██████╔╝██║     ███████║██║     █████╔╝      ██║███████║██║     █████╔╝    | :/\\: |  ".colorize(:yellow) 
+puts "   | :\\/: |    ██╔══██╗██║     ██╔══██║██║     ██╔═██╗ ██   ██║██╔══██║██║     ██╔═██╗    | :\\/: |  ".colorize(:yellow) 
+puts "   | '-- A|    ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗╚█████╔╝██║  ██║╚██████╗██║  ██╗   | '--'J|  ".colorize(:red) 
+puts "   `------'    ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   `------'  ".colorize(:red)                                                                                                                                        
+end
+
+
+
 
 # TODO: 
 # - if the dealer has 21 they auto win
