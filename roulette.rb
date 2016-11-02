@@ -349,7 +349,7 @@ def roulette_multiplayer
   else
   end
   puts
-  puts "#{@current_player.name} Cash on hand: #{@current_player.money}                 #{@other_player.name} Cash on hand: #{@other_player.money}".colorize(:light_green)
+  puts "#{@current_player.name} Cash on hand: $#{@current_player.money}                 #{@other_player.name} Cash on hand: $#{@other_player.money}".colorize(:light_green)
   puts
   puts "#{@current_player.name}, How much money are you wanting to wager? Wager 0 to return to menu"
   @wager1 = gets.strip.to_i
