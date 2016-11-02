@@ -80,7 +80,7 @@ def deck_deal
 end
 
 def dealers_show_card
-    puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :blue, :mode => :bold)
+    puts "  Dealer: #{@dealer_hand[0].rank} of #{@dealer_hand[0].suit}.  ".colorize(:color => :light_red, :mode => :bold)
     puts
     puts "---------------------" 
 end
@@ -103,14 +103,13 @@ def hit_or_bust
     player_total_meth
     if @player_total > 21
       puts "YOU BUSTED! You lose #{@bet_amount}".colorize(:light_red)
-      gets.strip
       @current_player.money -= @bet_amount 
-      player_bet
+      play_again
     elsif @player_total == 21
         puts "YOU WIN!"
       # puts "BLACKJACK! YOU WIN!"
-      gets.strip
-      player_bet
+      @current_player.money += @bet_amount
+      play_again  
     else
       puts
       puts "Do you want to hit? (y or n)"
@@ -120,7 +119,6 @@ def hit_or_bust
         blackjack_logo
         dealers_show_card
         card_compare
-        # compute_player_hand
       when 'n'
         puts
         dealer_show
@@ -151,10 +149,8 @@ def card_compare
   elsif @player_total > 21
     puts
     puts "BUSTED! You lose! $#{bet_amount}".colorize(:light_red)
-    # sleep(3)
-    gets.strip
     @current_player.money -= @bet_amount
-    deck_deal
+    play_again
   end
 end
 
@@ -226,29 +222,37 @@ def dealer_show
     compute_dealer_hand
     puts "Dealer total: #{@dealer_total}"
     puts "THE DEALER BUSTED! You win $#{@bet_amount}".colorize(:light_green)
-    print "Press ENTER > "
-    gets.strip
     @current_player.money += @bet_amount
-    player_bet
+    play_again
   end 
  end
 
  def declare_winner
   if @player_total > @dealer_total 
     puts "YOU BEAT THE DEALER! You win $#{@bet_amount}!".colorize(:light_green)
-    gets.strip
     @current_player.money += @bet_amount
-    player_bet
+    play_again
   elsif @player_total < @dealer_total
     puts "THE DEALER BEAT YOU! You lose $#{@bet_amount}".colorize(:light_red)
-    gets.strip
     @current_player.money -= @bet_amount
-    player_bet
+    play_again
   elsif @player_total == @dealer_total
     puts "YOU PUSHED! You get your bet back"#.colorize(:light_green)
-    gets.strip  
-    player_bet
+    play_again
   end
+ end
+
+ def play_again
+    puts "Do you want to play again? (y or n)"
+    print "> "
+    @play_again_input = gets.strip.downcase
+    if @play_again_input == 'y'
+        player_bet
+    elsif @play_again_input == 'n'
+        blackjack_menu
+    else 
+        puts 'Invalid input. Try again!'
+    end 
  end
 
 def blackjack_color_move
